@@ -21,6 +21,10 @@ Timer::~Timer() {
 }
 
 void Timer::Initialize(void) {
+	if (SDL_Init(SDL_INIT_TIMER) != 0) {
+			std::cout << "SDL Timer has failed to initialize!\n";
+	}
+
 	// initialize the ticks to a value
 	ms_lThisTick = SDL_GetTicks();
 	ms_lLastTick = ms_lThisTick;
@@ -38,8 +42,7 @@ void Timer::Update(void) {
 }
 
 void Timer::Destroy(void) {
-	// do nothing
-	return;
+	SDL_QuitSubSystem(SDL_INIT_TIMER);
 }
 
 float Timer::GetDT(void) {

@@ -23,10 +23,13 @@ private:
 	void InitSDL(void);
 	void InitOpenGL(void);
 
+	bool ProcessEvents(void);
+	void Resize(int x, int y);
+
 	void Draw(void);
 	void Update(void);
 
-	bool AppFinished;
+	Window* m_Window;
 };
 
 #endif /* APPLICATION_H_ */
