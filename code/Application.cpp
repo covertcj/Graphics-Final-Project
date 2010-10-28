@@ -24,7 +24,7 @@ void Application::Initialize(void) {
 	Timer::Initialize();
 
 	m_Window = new Window();
-	m_Window->CreateWindow(800, 600, 16, false, "Title");
+	m_Window->Create(800, 600, 16, false, "Title");
 }
 
 void Application::InitSDL(void) {
@@ -39,6 +39,7 @@ void Application::Terminate(void) {
 	Input::Destroy();
 	Timer::Destroy();
 
+	m_Window->Destroy();
 	delete m_Window;
 
 	SDL_Quit();

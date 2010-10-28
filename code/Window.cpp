@@ -15,10 +15,10 @@ Window::Window() {
 }
 
 Window::~Window(void) {
-	SDL_QuitSubSystem(SDL_INIT_VIDEO);
+	// do nothing
 }
 
-bool Window::CreateWindow(int width, int height, int bpp, bool fullscreen, const char* title) {
+bool Window::Create(int width, int height, int bpp, bool fullscreen, const char* title) {
 	// initialize SDL Video and ensure there was no error
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		std::cout << "SDL Video has failed to initialize!\n";
@@ -57,6 +57,11 @@ bool Window::CreateWindow(int width, int height, int bpp, bool fullscreen, const
 	SDL_PushEvent(&resizeEvent);
 
 	return true;
+}
+
+void Window::Destroy(void) {
+	// clean up SDL Video
+	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
 void Window::SetSize(int width, int height) {

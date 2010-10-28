@@ -15,7 +15,8 @@ public:
 	Window(void);
 	virtual ~Window(void);
 
-	bool CreateWindow(int width, int height, int bpp, bool fullscreen, const char* title);
+	bool Create(int width, int height, int bpp, bool fullscreen, const char* title);
+	void Destroy(void);
 
 	void SetSize(int width, int height);
 
