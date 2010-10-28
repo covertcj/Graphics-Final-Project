@@ -24,7 +24,8 @@ void Application::Initialize(void) {
 	Timer::Initialize();
 
 	m_Window = new Window();
-	m_Window->Create(800, 600, 16, false, "Title");
+	m_Window->Create(WINDOW_RESOLUTION_X, WINDOW_RESOLUTION_Y, WINDOW_BPP,
+			WINDOW_FULLSCREEN, WINDOW_TITLE);
 }
 
 void Application::InitSDL(void) {
@@ -73,7 +74,7 @@ void Application::Resize(int x, int y) {
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0f, (GLfloat)x / (GLfloat)y, 1.0f, 100.0f);
+	gluPerspective(45.0f, (GLfloat) x / (GLfloat) y, 1.0f, 100.0f);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -84,15 +85,15 @@ bool Application::ProcessEvents(void) {
 
 	while (SDL_PollEvent(&event)) {
 		switch (event.type) {
-			// return false to end the game loop
-			case SDL_QUIT:
-				return false;
+		// return false to end the game loop
+		case SDL_QUIT:
+			return false;
 
-			case SDL_VIDEORESIZE:
-				Resize(event.resize.w, event.resize.h);
+		case SDL_VIDEORESIZE:
+			Resize(event.resize.w, event.resize.h);
 
-			default:
-				break;
+		default:
+			break;
 		}
 	}
 

@@ -8,6 +8,12 @@
 #ifndef APPLICATION_H_
 #define APPLICATION_H_
 
+#define WINDOW_FULLSCREEN	false
+#define WINDOW_RESOLUTION_X	800
+#define WINDOW_RESOLUTION_Y	600
+#define WINDOW_BPP			16
+#define WINDOW_TITLE			"Title"
+
 #include "includes.h"
 
 class Application {
