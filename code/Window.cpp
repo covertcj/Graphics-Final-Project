@@ -7,18 +7,18 @@
 
 #include "Window.h"
 
-Window::Window() {
+AppWindow::AppWindow() {
 	m_Width = 0;
 	m_Height = 0;
 	m_Bpp = 0;
 	m_Fullscreen = false;
 }
 
-Window::~Window(void) {
+AppWindow::~AppWindow(void) {
 	// do nothing
 }
 
-bool Window::Create(int width, int height, int bpp, bool fullscreen, const char* title) {
+bool AppWindow::Create(int width, int height, int bpp, bool fullscreen, const char* title) {
 	// initialize SDL Video and ensure there was no error
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		std::cout << "SDL Video has failed to initialize!\n";
@@ -47,32 +47,32 @@ bool Window::Create(int width, int height, int bpp, bool fullscreen, const char*
 	// create the window
 	/*SDL_Surface* screen = */
 	SDL_SetVideoMode(m_Width, m_Height, m_Bpp, flags);
+	glClearColor(1.0, 1.0, 1.0, 1.0);
 
 	// create a resize event to setup OpenGL
 	SDL_Event resizeEvent;
 	resizeEvent.type = SDL_VIDEORESIZE;
 	resizeEvent.resize.w = m_Width;
-	resizeEvent.resize.w = m_Height;
-
+	resizeEvent.resize.h = m_Height;
 	SDL_PushEvent(&resizeEvent);
 
 	return true;
 }
 
-void Window::Destroy(void) {
+void AppWindow::Destroy(void) {
 	// clean up SDL Video
 	SDL_QuitSubSystem(SDL_INIT_VIDEO);
 }
 
-void Window::SetSize(int width, int height) {
+void AppWindow::SetSize(int width, int height) {
 	m_Height = height;
 	m_Width = width;
 }
 
-int Window::GetWidth(void) {
+int AppWindow::GetWidth(void) {
 	return m_Width;
 }
 
-int Window::GetHeight(void) {
+int AppWindow::GetHeight(void) {
 	return m_Height;
 }

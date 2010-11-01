@@ -23,9 +23,11 @@ void Application::Initialize(void) {
 	Input::Initialize();
 	Timer::Initialize();
 
-	m_Window = new Window();
+	m_Window = new AppWindow();
 	m_Window->Create(WINDOW_RESOLUTION_X, WINDOW_RESOLUTION_Y, WINDOW_BPP,
 			WINDOW_FULLSCREEN, WINDOW_TITLE);
+
+	m_obj = new TestObject();
 }
 
 void Application::InitSDL(void) {
@@ -42,6 +44,7 @@ void Application::Terminate(void) {
 
 	m_Window->Destroy();
 	delete m_Window;
+	delete m_obj;
 
 	SDL_Quit();
 }
@@ -55,14 +58,23 @@ void Application::Run(void) {
 
 void Application::Draw(void) {
 	// TODO Draw the program
+	//std::cout << "Draw()\n";
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
+
+	glTranslatef(0.0, 0.0, -20.0);
+
+	m_obj->Draw();
+
+	SDL_GL_SwapBuffers();
 }
 
 void Application::Update(void) {
 	// TODO Update the program
 	Timer::Update();
 	Input::Update();
+
+	m_obj->Update();
 }
 
 void Application::Resize(int x, int y) {
@@ -74,7 +86,7 @@ void Application::Resize(int x, int y) {
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(45.0f, (GLfloat) x / (GLfloat) y, 1.0f, 100.0f);
+	gluPerspective(60.0f, (GLfloat) x / (GLfloat) y, 1.0f, 100.0f);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -91,6 +103,7 @@ bool Application::ProcessEvents(void) {
 
 		case SDL_VIDEORESIZE:
 			Resize(event.resize.w, event.resize.h);
+			break;
 
 		default:
 			break;

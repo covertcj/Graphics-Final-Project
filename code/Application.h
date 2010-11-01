@@ -35,7 +35,9 @@ private:
 	void Draw(void);
 	void Update(void);
 
-	Window* m_Window;
+	AppWindow* m_Window;
+
+	TestObject* m_obj;
 };
 
 #endif /* APPLICATION_H_ */

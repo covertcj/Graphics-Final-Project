@@ -10,10 +10,10 @@
 
 #include "includes.h"
 
-class Window {
+class AppWindow {
 public:
-	Window(void);
-	virtual ~Window(void);
+	AppWindow(void);
+	virtual ~AppWindow(void);
 
 	bool Create(int width, int height, int bpp, bool fullscreen, const char* title);
 	void Destroy(void);
