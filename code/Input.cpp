@@ -28,12 +28,18 @@ Input::~Input(void) {
 
 void Input::Destroy(void) {
 	delete[] m_OldKeyState;
+	delete[] m_KeyState;
 }
 
 void Input::Initialize(void) {
 	// initialize the keyboard data
-	Input::m_KeyState = SDL_GetKeyState(&Input::m_KeyCount);
+	unsigned char* tempKeyState = SDL_GetKeyState(&Input::m_KeyCount);
+
+	Input::m_KeyState = new unsigned char[Input::m_KeyCount];
 	Input::m_OldKeyState = new unsigned char[Input::m_KeyCount];
+
+	memcpy(Input::m_OldKeyState, Input::m_KeyState, sizeof(unsigned char) * Input::m_KeyCount);
+	memcpy(Input::m_KeyState, tempKeyState, sizeof(unsigned char) * Input::m_KeyCount);
 
 	// initialize the mouse button data
 	Input::m_MouseDX = Input::m_MouseDY = 0;
@@ -49,6 +55,8 @@ void Input::Update(void) {
 	// push SDL events onto the SDL event queue
 	SDL_PumpEvents();
 
+	unsigned char* tempKeyState = SDL_GetKeyState(&Input::m_KeyCount);
+
 	// set the mouse data
 	Input::m_OldMouseState = m_MouseState;
 	Input::m_MouseState = SDL_GetRelativeMouseState(&m_MouseDX, &m_MouseDY);
@@ -56,5 +64,5 @@ void Input::Update(void) {
 	// set the keyboard data
 	// TODO currently, both keystates are updated to current instead of current and last
 	memcpy(Input::m_OldKeyState, Input::m_KeyState, sizeof(unsigned char) * Input::m_KeyCount);
-	Input::m_KeyState = SDL_GetKeyState(&Input::m_KeyCount);
+	memcpy(Input::m_KeyState, tempKeyState, sizeof(unsigned char) * Input::m_KeyCount);
 }

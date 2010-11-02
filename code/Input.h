@@ -5,7 +5,7 @@
  *      Author: covertcj
  */
 
-#include <SDL/SDL.h>
+#include "includes.h"
 
 #ifndef INPUT_H_
 #define INPUT_H_

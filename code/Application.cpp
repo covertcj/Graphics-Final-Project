@@ -58,7 +58,6 @@ void Application::Run(void) {
 
 void Application::Draw(void) {
 	// TODO Draw the program
-	//std::cout << "Draw()\n";
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
@@ -70,11 +69,17 @@ void Application::Draw(void) {
 }
 
 void Application::Update(void) {
-	// TODO Update the program
 	Timer::Update();
 	Input::Update();
 
 	m_obj->Update();
+
+	// quit when escape is pressed
+	if (Input::IsKeyNewlyDown(SDLK_ESCAPE)) {
+		SDL_Event ev;
+		ev.type = SDL_QUIT;
+		SDL_PushEvent(&ev);
+	}
 }
 
 void Application::Resize(int x, int y) {
