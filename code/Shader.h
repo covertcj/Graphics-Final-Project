@@ -3,6 +3,11 @@
 
 #include "includes.h"
 
+using std::string;
+using std::map;
+using std::ifstream;
+using std::vector;
+
 class GLSLProgram
 {
 public:
@@ -104,7 +109,7 @@ public:
     }
 
     void sendUniform4x4(const string& name, const float* matrix, bool transpose=false)
-    {
+    {using std::string;
         GLuint location = getUniformLocation(name);
         glUniformMatrix4fv(location, 1, transpose, matrix);
     }
@@ -141,7 +146,7 @@ public:
     }
 
     void bindShader()
-    {
+    {using std::string;
         glUseProgram(m_programID);
     }
 

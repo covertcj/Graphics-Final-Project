@@ -32,7 +32,6 @@ void TestObject::Draw(void) {
 
 	glRotatef(angle, 1.0, 1.0, 1.0);
 
-	glColor3f(0.5, 0.5, 0.5);
 	texture->Bind();
 
 	model->render();

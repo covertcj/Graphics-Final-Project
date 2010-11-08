@@ -8,12 +8,6 @@
 #ifndef APPLICATION_H_
 #define APPLICATION_H_
 
-#define WINDOW_FULLSCREEN	false
-#define WINDOW_RESOLUTION_X	800
-#define WINDOW_RESOLUTION_Y	600
-#define WINDOW_BPP			16
-#define WINDOW_TITLE			"Title"
-
 #include "includes.h"
 
 class Application {
@@ -29,6 +23,8 @@ private:
 	void InitSDL(void);
 	void InitOpenGL(void);
 
+	void LoadTextures(void);
+
 	bool ProcessEvents(void);
 	void Resize(int x, int y);
 
@@ -37,7 +33,10 @@ private:
 
 	AppWindow* m_Window;
 
-	TestObject* m_obj;
+	//TestObject* m_obj;
+	Level* m_Level;
+
+	Texture* m_GroundTexture;
 };
 
 #endif /* APPLICATION_H_ */

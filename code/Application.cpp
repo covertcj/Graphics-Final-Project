@@ -30,7 +30,11 @@ void Application::Initialize(void) {
 	InitOpenGL();
 	glewInit();
 
-	m_obj = new TestObject();
+	LoadTextures();
+
+	m_Level = new Level();
+	m_Level->Initialize(m_GroundTexture);
+	//m_obj = new TestObject();
 }
 
 void Application::InitSDL(void) {
@@ -44,13 +48,22 @@ void Application::InitOpenGL(void) {
 	glEnable(GL_TEXTURE_2D);
 }
 
+void Application::LoadTextures(void) {
+	m_GroundTexture = new Texture();
+	m_GroundTexture->Load(TEXTURE_GROUND);
+}
+
 void Application::Terminate(void) {
 	Input::Destroy();
 	Timer::Destroy();
 
 	m_Window->Destroy();
 	delete m_Window;
-	delete m_obj;
+	delete m_Level;
+	//delete m_obj;
+
+	m_GroundTexture->Destroy();
+	delete m_GroundTexture;
 
 	SDL_Quit();
 }
@@ -67,9 +80,17 @@ void Application::Draw(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	glTranslatef(0.0, 0.0, -2.0);
+	glPushMatrix();
+	glTranslatef(-(LEVEL_SIZE_X / 2.0), -(LEVEL_SIZE_Y / 2.0), -LEVEL_DISTANCE);
 
-	m_obj->Draw();
+		m_Level->Draw();
+	glPopMatrix();
+
+	/*glPushMatrix();
+		glTranslatef(0.0, 0.0, -2.0);
+
+		m_obj->Draw();
+	glPopMatrix();*/
 
 	SDL_GL_SwapBuffers();
 }
@@ -78,7 +99,8 @@ void Application::Update(void) {
 	Timer::Update();
 	Input::Update();
 
-	m_obj->Update();
+	//m_obj->Update();
+	m_Level->Update();
 
 	// quit when escape is pressed
 	if (Input::IsKeyNewlyDown(SDLK_ESCAPE)) {
