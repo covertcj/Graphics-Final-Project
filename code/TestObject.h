@@ -21,8 +21,8 @@ public:
 private:
 	float angle;
 
-	unsigned int m_vaoID[2];
-	unsigned int m_vboID[3];
+	Texture* texture;
+	MD2Model* model;
 };
 
 #endif /* TESTOBJECT_H_ */

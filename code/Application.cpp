@@ -27,6 +27,9 @@ void Application::Initialize(void) {
 	m_Window->Create(WINDOW_RESOLUTION_X, WINDOW_RESOLUTION_Y, WINDOW_BPP,
 			WINDOW_FULLSCREEN, WINDOW_TITLE);
 
+	InitOpenGL();
+	glewInit();
+
 	m_obj = new TestObject();
 }
 
@@ -36,6 +39,9 @@ void Application::InitSDL(void) {
 
 void Application::InitOpenGL(void) {
 	// TODO Enable parts of OpenGL
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
+	glEnable(GL_TEXTURE_2D);
 }
 
 void Application::Terminate(void) {
@@ -61,7 +67,7 @@ void Application::Draw(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	glTranslatef(0.0, 0.0, -20.0);
+	glTranslatef(0.0, 0.0, -2.0);
 
 	m_obj->Draw();
 

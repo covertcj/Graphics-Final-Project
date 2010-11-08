@@ -7,23 +7,21 @@
 
 #include "TestObject.h"
 
-typedef struct SVertex {
-	GLfloat x;
-	GLfloat y;
-	GLfloat z;
-} Vertex;
-
-typedef struct SColor {
-	GLfloat r;
-	GLfloat g;
-	GLfloat b;
-} Color;
-
 TestObject::TestObject(void) {
+	texture = new Texture();
+	texture->Load("data/textures/ogrobase.bmp");
+
+	model = new MD2Model("data/shaders/model.vp", "data/shaders/model.fp");
+	model->setAnimation(Animation::IDLE);
+	model->load("data/models/Ogro/tris.md2");
+
 	angle = 0.0f;
 }
 
 TestObject::~TestObject(void) {
+	texture->Destroy();
+	delete texture;
+	delete model;
 }
 
 void TestObject::Draw(void) {
@@ -34,13 +32,19 @@ void TestObject::Draw(void) {
 
 	glRotatef(angle, 1.0, 1.0, 1.0);
 
-	glColor3f(1.0, 0.0, 0.0);
+	glColor3f(0.5, 0.5, 0.5);
+	texture->Bind();
 
-	glBegin(GL_TRIANGLES);
+	model->render();
+
+	/*glBegin(GL_TRIANGLES);
+		glTexCoord2f(0.0, 0.0);
 		glVertex3fv((GLfloat*)&(verts[0]));
+		glTexCoord2f(0.5, 1.0);
 		glVertex3fv((GLfloat*)&(verts[1]));
+		glTexCoord2f(1.0, 0.0);
 		glVertex3fv((GLfloat*)&(verts[2]));
-	glEnd();
+	glEnd();*/
 }
 
 void TestObject::Update(void) {
@@ -50,4 +54,6 @@ void TestObject::Update(void) {
 	if (angle >= 360.0f) {
 		angle = 0.0f;
 	}
+
+	model->update(Timer::GetDT());
 }
