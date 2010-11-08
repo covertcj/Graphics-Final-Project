@@ -81,7 +81,7 @@ void Application::Draw(void) {
 	glLoadIdentity();
 
 	glPushMatrix();
-	glTranslatef(-(LEVEL_SIZE_X / 2.0), -(LEVEL_SIZE_Y / 2.0), -LEVEL_DISTANCE);
+		glTranslatef(-(LEVEL_SIZE_X / 2.0), -(LEVEL_SIZE_Y / 2.0), -LEVEL_DISTANCE);
 
 		m_Level->Draw();
 	glPopMatrix();

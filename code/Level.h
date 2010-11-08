@@ -26,6 +26,12 @@ private:
 
 	GLSLProgram* m_GroundShader;
 	Texture* m_GroundTexture;
+
+	Player* m_Player;
+	Texture* m_PlayerTexture;
+
+    GLuint m_vertexBuffer;
+    GLuint m_texCoordBuffer;
 };
 
 #endif /* LEVEL_H_ */

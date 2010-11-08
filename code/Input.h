@@ -44,6 +44,16 @@ public:
 	 */
 	static int m_MouseDY;
 	/*!
+	 * The change in position of the mouse in the x direction
+	 * since the last update.
+	 */
+	static int m_MouseX;
+	/*!
+	 * The change in position of the mouse in the y direction
+	 * since the last update.
+	 */
+	static int m_MouseY;
+	/*!
 	 * The state of the mouse buttons this frame.
 	 */
 	static unsigned int m_MouseState;

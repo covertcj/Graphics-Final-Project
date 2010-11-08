@@ -12,9 +12,7 @@ struct TexCoord
 
     TexCoord(float s, float t):
     s(s),
-    t(t)
-    {
-    }
+    t(t) { }
 };
 
 struct Color
@@ -24,18 +22,13 @@ struct Color
     r(R),
     g(G),
     b(B),
-    a(A)
-    {
-    }
+    a(A) { }
 
     Color():
     r(0.0f),
     g(0.0f),
     b(0.0f),
-    a(0.0f)
-    {
-
-    }
+    a(0.0f) { }
 };
 
 struct Vector3
@@ -95,7 +88,7 @@ struct Vector3
 
     float length() const
     {
-        return sqrtf(x * x + y * y + z * z);
+        return sqrt(x * x + y * y + z * z);
     }
 
     void normalize()
@@ -112,6 +105,11 @@ typedef Vector3 Vertex;
 inline float degreesToRadians(const float degrees) {
     const float PIOver180 = 3.14159f / 180.0f;
     return degrees * PIOver180;
+}
+
+inline float rad2Deg(const float degrees) {
+	const float k = 180.0f / 3.14159f;
+	return degrees * k;
 }
 
 #endif
