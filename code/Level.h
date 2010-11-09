@@ -10,6 +10,19 @@
 
 #include "includes.h"
 
+typedef struct SVec3 {
+	float x;
+	float y;
+	float z;
+} Vec3;
+
+typedef struct SLight {
+	Vec3 position;
+	Vec3 diffuse;
+	Vec3 ambient;
+	Vec3 specular;
+} Light;
+
 class Level {
 public:
 	Level(void);
@@ -24,6 +37,8 @@ public:
 private:
 	void DrawLevelPlane(void);
 
+	Light m_PlayerLight;
+
 	GLSLProgram* m_GroundShader;
 	Texture* m_GroundTexture;
 
@@ -32,6 +47,7 @@ private:
 
     GLuint m_vertexBuffer;
     GLuint m_texCoordBuffer;
+    GLuint m_normalsBuffer;
 };
 
 #endif /* LEVEL_H_ */

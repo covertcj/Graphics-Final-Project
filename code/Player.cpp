@@ -96,3 +96,11 @@ void Player::Update(void) {
 	m_Model->update(dt);
 }
 
+float Player::GetX(void) {
+	return m_XPos;
+}
+
+float Player::GetY(void) {
+	return m_YPos;
+}
+

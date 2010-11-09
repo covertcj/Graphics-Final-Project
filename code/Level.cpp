@@ -33,6 +33,12 @@ void Level::Initialize(Texture* groundTexture) {
 	verts[2].x = LEVEL_SIZE_X; 	verts[2].y = LEVEL_SIZE_Y; 	verts[2].z = 0.0;
 	verts[3].x = 0.0; 			verts[3].y = LEVEL_SIZE_Y; 	verts[3].z = 0.0;
 
+	Vertex norms[numVerts];
+	norms[0].x = 0.0; norms[0].y = 0.0; norms[0].z = 1.0;
+	norms[1].x = 0.0; norms[1].y = 0.0; norms[1].z = 1.0;
+	norms[2].x = 0.0; norms[2].y = 0.0; norms[2].z = 1.0;
+	norms[3].x = 0.0; norms[3].y = 0.0; norms[3].z = 1.0;
+
 	TexCoord texCoords[numVerts];
 	texCoords[0].s = 0.0; 						texCoords[0].t = 0.0;
 	texCoords[1].s = LEVEL_TEXTURE_REPEATS_X; 	texCoords[1].t = 0.0;
@@ -41,11 +47,31 @@ void Level::Initialize(Texture* groundTexture) {
 
 	glGenBuffers(1, &m_vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * numVerts, &verts[0], GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * numVerts, &verts[0], GL_STATIC_DRAW);
 
 	glGenBuffers(1, &m_texCoordBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, m_texCoordBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * numVerts, &texCoords[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &m_normalsBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, m_normalsBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * numVerts, &norms[0], GL_STATIC_DRAW);
+
+	m_PlayerLight.position.x = 0.0;
+	m_PlayerLight.position.y = 0.0;
+	m_PlayerLight.position.z = -LEVEL_DISTANCE + 1.0;
+
+	m_PlayerLight.ambient.x = LIGHT0_AMBIENT_R;
+	m_PlayerLight.ambient.y = LIGHT0_AMBIENT_G;
+	m_PlayerLight.ambient.z = LIGHT0_AMBIENT_B;
+
+	m_PlayerLight.diffuse.x = LIGHT0_DIFFUSE_R;
+	m_PlayerLight.diffuse.y = LIGHT0_DIFFUSE_G;
+	m_PlayerLight.diffuse.z = LIGHT0_DIFFUSE_B;
+
+	m_PlayerLight.specular.x = LIGHT0_SPECULAR_R;
+	m_PlayerLight.specular.y = LIGHT0_SPECULAR_G;
+	m_PlayerLight.specular.z = LIGHT0_SPECULAR_B;
 }
 
 void Level::Destroy(void) {
@@ -72,6 +98,8 @@ void Level::Draw(void) {
 
 void Level::Update(void) {
 	m_Player->Update();
+	m_PlayerLight.position.x = -(LEVEL_SIZE_X / 2.0) + m_Player->GetX();
+	m_PlayerLight.position.y = -(LEVEL_SIZE_Y / 2.0) + m_Player->GetY();
 }
 
 void Level::DrawLevelPlane(void) {
@@ -87,10 +115,18 @@ void Level::DrawLevelPlane(void) {
 	m_GroundShader->bindShader();
 	m_GroundShader->sendUniform4x4("modelview_matrix", modelviewMatrix);
 	m_GroundShader->sendUniform4x4("projection_matrix", projectionMatrix);
+	m_GroundShader->sendUniform("ambientLight", LIGHT_AMBIENT_R, LIGHT_AMBIENT_G, LIGHT_AMBIENT_B);
+	m_GroundShader->sendUniform("light0Position", m_PlayerLight.position.x, m_PlayerLight.position.y, m_PlayerLight.position.z);
+	m_GroundShader->sendUniform("light0Ambient", m_PlayerLight.ambient.x, m_PlayerLight.ambient.y, m_PlayerLight.ambient.z);
+	m_GroundShader->sendUniform("light0Diffuse", m_PlayerLight.diffuse.x, m_PlayerLight.diffuse.y, m_PlayerLight.diffuse.z);
+	m_GroundShader->sendUniform("light0ConstantAttenuation", 0.35f);
+	m_GroundShader->sendUniform("light0LinearAttenuation", 0.050f);
+	m_GroundShader->sendUniform("light0QuadraticAttenuation", 0.025f);
 	m_GroundShader->sendUniform("texture0", 0);
 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
 	glVertexAttribPointer((GLint)0, 3, GL_FLOAT, GL_FALSE, 0, 0);
@@ -98,8 +134,12 @@ void Level::DrawLevelPlane(void) {
 	glBindBuffer(GL_ARRAY_BUFFER, m_texCoordBuffer);
 	glVertexAttribPointer((GLint)1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
+	glBindBuffer(GL_ARRAY_BUFFER, m_normalsBuffer);
+	glVertexAttribPointer((GLint)2, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
 	glDrawArrays(GL_QUADS, 0, 4);
 
+	glDisableVertexAttribArray(2);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(0);
 

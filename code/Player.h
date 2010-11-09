@@ -18,6 +18,9 @@ public:
 	void Draw(void);
 	void Update(void);
 
+	float GetX(void);
+	float GetY(void);
+
 private:
 	float m_XPos;
 	float m_YPos;
