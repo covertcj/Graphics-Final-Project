@@ -70,7 +70,7 @@ using std::ifstream;
 #define MODEL_LIGHT				"data/models/Ball/tris.md2"
 
 #define TEXTURE_GROUND			"data/textures/ground.bmp"
-#define TEXTURE_LIGHT			"data/textures/light.bmp"//"data/textures/light.bmp"
+#define TEXTURE_LIGHT			"data/textures/light.bmp"
 #define TEXTURE_PLAYER			"data/textures/Ogro/player.bmp"
 #define TEXTURE_ENEMY			"data/textures/Ogro/enemy.bmp"
 
