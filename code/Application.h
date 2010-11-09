@@ -37,6 +37,7 @@ private:
 	Level* m_Level;
 
 	Texture* m_GroundTexture;
+	Texture* m_LightTexture;
 };
 
 #endif /* APPLICATION_H_ */

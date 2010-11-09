@@ -45,6 +45,7 @@ class MD2Model
 {
 public:
     MD2Model(const std::string vertexShader, const std::string fragmentShader);
+    MD2Model(GLSLProgram* shader);
     virtual ~MD2Model();
 
     bool load(const std::string& filename);

@@ -33,7 +33,7 @@ void Application::Initialize(void) {
 	LoadTextures();
 
 	m_Level = new Level();
-	m_Level->Initialize(m_GroundTexture);
+	m_Level->Initialize(m_GroundTexture, m_LightTexture);
 	//m_obj = new TestObject();
 }
 
@@ -49,6 +49,9 @@ void Application::InitOpenGL(void) {
 }
 
 void Application::LoadTextures(void) {
+	m_LightTexture = new Texture();
+	m_LightTexture->Load(TEXTURE_LIGHT);
+
 	m_GroundTexture = new Texture();
 	m_GroundTexture->Load(TEXTURE_GROUND);
 }
@@ -64,6 +67,9 @@ void Application::Terminate(void) {
 
 	m_GroundTexture->Destroy();
 	delete m_GroundTexture;
+
+	m_LightTexture->Destroy();
+	delete m_LightTexture;
 
 	SDL_Quit();
 }

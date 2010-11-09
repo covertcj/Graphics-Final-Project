@@ -28,7 +28,7 @@ public:
 	Level(void);
 	virtual ~Level(void);
 
-	void Initialize(Texture* groundTexture);
+	void Initialize(Texture* groundTexture, Texture* lightTexture);
 	void Destroy(void);
 
 	void Update(void);
@@ -36,8 +36,13 @@ public:
 
 private:
 	void DrawLevelPlane(void);
+	void DrawLight(void);
 
 	Light m_PlayerLight;
+
+	MD2Model* m_LightModel;
+	//GLSLProgram* m_LightShader;
+	Texture* m_LightTexture;
 
 	GLSLProgram* m_GroundShader;
 	Texture* m_GroundTexture;

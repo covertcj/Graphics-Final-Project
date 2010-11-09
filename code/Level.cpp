@@ -16,12 +16,25 @@ Level::~Level(void) {
 	// TODO Auto-generated destructor stub
 }
 
-void Level::Initialize(Texture* groundTexture) {
+void Level::Initialize(Texture* groundTexture, Texture* lightTexture) {
 	int numVerts = 4;
 
 	m_GroundTexture = groundTexture;
 	m_GroundShader = new GLSLProgram(VSHADER_GROUND, FSHADER_GROUND);
 	m_GroundShader->initialize();
+	m_GroundShader->bindAttrib(0, "a_Vertex");
+	m_GroundShader->bindAttrib(1, "a_TexCoord0");
+	m_GroundShader->bindAttrib(2, "a_Normal");
+	m_GroundShader->linkProgram();
+
+	m_LightTexture = lightTexture;
+	/*m_LightShader = new GLSLProgram(VSHADER_LIGHT, FSHADER_LIGHT);
+	m_LightShader->initialize();
+	m_LightShader->bindAttrib(0, "a_Vertex");
+	m_LightShader->bindAttrib(1, "a_TexCoord0");
+	m_LightShader->linkProgram();*/
+	m_LightModel = new MD2Model(VSHADER_LIGHT, FSHADER_LIGHT);
+	m_LightModel->load(MODEL_LIGHT);
 
 	m_PlayerTexture = new Texture();
 	m_PlayerTexture->Load(TEXTURE_PLAYER);
@@ -59,7 +72,7 @@ void Level::Initialize(Texture* groundTexture) {
 
 	m_PlayerLight.position.x = 0.0;
 	m_PlayerLight.position.y = 0.0;
-	m_PlayerLight.position.z = -LEVEL_DISTANCE + 1.0;
+	m_PlayerLight.position.z = -LEVEL_DISTANCE + 3.0;
 
 	m_PlayerLight.ambient.x = LIGHT0_AMBIENT_R;
 	m_PlayerLight.ambient.y = LIGHT0_AMBIENT_G;
@@ -78,6 +91,8 @@ void Level::Destroy(void) {
 	m_GroundShader->unload();
 	delete m_GroundShader;
 
+	delete m_LightModel;
+
 	// cleanup the player
 	m_PlayerTexture->Destroy();
 	delete m_PlayerTexture;
@@ -85,15 +100,10 @@ void Level::Destroy(void) {
 }
 
 void Level::Draw(void) {
-	glPushMatrix();
-		DrawLevelPlane();
-	glPopMatrix();
+	DrawLevelPlane();
 
-	glFlush();
-
-	glPushMatrix();
-		m_Player->Draw();
-	glPopMatrix();
+	m_Player->Draw();
+	DrawLight();
 }
 
 void Level::Update(void) {
@@ -119,8 +129,8 @@ void Level::DrawLevelPlane(void) {
 	m_GroundShader->sendUniform("light0Position", m_PlayerLight.position.x, m_PlayerLight.position.y, m_PlayerLight.position.z);
 	m_GroundShader->sendUniform("light0Ambient", m_PlayerLight.ambient.x, m_PlayerLight.ambient.y, m_PlayerLight.ambient.z);
 	m_GroundShader->sendUniform("light0Diffuse", m_PlayerLight.diffuse.x, m_PlayerLight.diffuse.y, m_PlayerLight.diffuse.z);
-	m_GroundShader->sendUniform("light0ConstantAttenuation", 0.35f);
-	m_GroundShader->sendUniform("light0LinearAttenuation", 0.050f);
+	m_GroundShader->sendUniform("light0ConstantAttenuation", 0.15f);
+	m_GroundShader->sendUniform("light0LinearAttenuation", 0.010f);
 	m_GroundShader->sendUniform("light0QuadraticAttenuation", 0.025f);
 	m_GroundShader->sendUniform("texture0", 0);
 
@@ -142,15 +152,27 @@ void Level::DrawLevelPlane(void) {
 	glDisableVertexAttribArray(2);
 	glDisableVertexAttribArray(1);
 	glDisableVertexAttribArray(0);
+}
 
-	/*glBegin(GL_QUADS);
-		glTexCoord2f(0.0, 0.0);
-		glVertex3fv((const GLfloat*) &(verts[0]));
-		glTexCoord2f(LEVEL_TEXTURE_REPEATS_X, 0.0);
-		glVertex3fv((const GLfloat*) &(verts[1]));
-		glTexCoord2f(LEVEL_TEXTURE_REPEATS_X, LEVEL_TEXTURE_REPEATS_Y);
-		glVertex3fv((const GLfloat*) &(verts[2]));
-		glTexCoord2f(0.0, LEVEL_TEXTURE_REPEATS_Y);
-		glVertex3fv((const GLfloat*) &(verts[3]));
-	glEnd();*/
+void Level::DrawLight() {
+    /*static float modelviewMatrix[16];
+    static float projectionMatrix[16];
+
+    glGetFloatv(GL_MODELVIEW_MATRIX, modelviewMatrix);
+    glGetFloatv(GL_PROJECTION_MATRIX, projectionMatrix);*/
+
+	m_LightTexture->Bind();
+
+	/*m_LightShader->bindShader();
+	m_LightShader->sendUniform4x4("modelview_matrix", modelviewMatrix);
+	m_LightShader->sendUniform4x4("projection_matrix", projectionMatrix);
+	m_LightShader->sendUniform("ambient", LIGHT_AMBIENT_R, LIGHT_AMBIENT_G, LIGHT_AMBIENT_B);
+	m_LightShader->sendUniform("emissive", 1.0f, 1.0f, 1.0f);
+	m_LightShader->sendUniform("texture0", 0);*/
+
+	glPushMatrix();
+		glTranslatef(m_PlayerLight.position.x + (LEVEL_SIZE_X / 2.0), m_PlayerLight.position.y + (LEVEL_SIZE_X / 2.0), 3.0);
+
+		m_LightModel->render();
+	glPopMatrix();
 }

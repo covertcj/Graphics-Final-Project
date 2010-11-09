@@ -45,6 +45,17 @@ m_shaderProgram(NULL)
     m_shaderProgram = new GLSLProgram(vertexShader, fragmentShader);
 }
 
+MD2Model::MD2Model(GLSLProgram* shader):
+m_currentFrame(0),
+m_nextFrame(1),
+m_startFrame(0),
+m_endFrame(0),
+m_interpolation(0.0f),
+m_shaderProgram(NULL)
+{
+    m_shaderProgram = shader;
+}
+
 MD2Model::~MD2Model()
 {
     delete m_shaderProgram;

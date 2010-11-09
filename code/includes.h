@@ -20,6 +20,7 @@
 //#include <SDL/SDL_opengl.h>
 #include <GL/glu.h>
 
+class MD2Model;
 class Player;
 class GLSLProgram;
 class AppWindow;
@@ -66,8 +67,10 @@ using std::ifstream;
 
 #define MODEL_PLAYER			"data/models/Ogro/tris.md2"
 #define MODEL_ENEMY				"data/models/Ogro/tris.md2"
+#define MODEL_LIGHT				"data/models/Ball/tris.md2"
 
 #define TEXTURE_GROUND			"data/textures/ground.bmp"
+#define TEXTURE_LIGHT			"data/textures/light.bmp"//"data/textures/light.bmp"
 #define TEXTURE_PLAYER			"data/textures/Ogro/player.bmp"
 #define TEXTURE_ENEMY			"data/textures/Ogro/enemy.bmp"
 
@@ -77,6 +80,8 @@ using std::ifstream;
 #define FSHADER_PLAYER			"data/shaders/model.fp"
 #define VSHADER_ENEMY			"data/shaders/model.vp"
 #define FSHADER_ENEMY			"data/shaders/model.fp"
+#define VSHADER_LIGHT			"data/shaders/model.vp"
+#define FSHADER_LIGHT			"data/shaders/model.fp"
 
 #define LIGHT_AMBIENT_R			0.20
 #define LIGHT_AMBIENT_G			0.20
@@ -86,13 +91,13 @@ using std::ifstream;
 #define LIGHT0_AMBIENT_G		0.00
 #define LIGHT0_AMBIENT_B		0.00
 
-#define LIGHT0_DIFFUSE_R		0.50;
-#define LIGHT0_DIFFUSE_G		0.50;
-#define LIGHT0_DIFFUSE_B		0.50;
+#define LIGHT0_DIFFUSE_R		0.50
+#define LIGHT0_DIFFUSE_G		0.50
+#define LIGHT0_DIFFUSE_B		0.50
 
-#define LIGHT0_SPECULAR_R		0.50;
-#define LIGHT0_SPECULAR_G		0.50;
-#define LIGHT0_SPECULAR_B		0.50;
+#define LIGHT0_SPECULAR_R		0.50
+#define LIGHT0_SPECULAR_G		0.50
+#define LIGHT0_SPECULAR_B		0.50
 
 #define ANIMATION_DELAY_RUN		10
 
