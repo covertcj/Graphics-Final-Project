@@ -40,6 +40,9 @@ void Level::Initialize(Texture* groundTexture, Texture* lightTexture) {
 	m_PlayerTexture->Load(TEXTURE_PLAYER);
 	m_Player = new Player(m_PlayerTexture);
 
+	m_RocketTexture = new Texture();
+	m_RocketTexture->Load(TEXTURE_ROCKET);
+
 	Vertex verts[numVerts];
 	verts[0].x = 0.0;			verts[0].y = 0.0; 			verts[0].z = 0.0;
 	verts[1].x = LEVEL_SIZE_X; 	verts[1].y = 0.0; 			verts[1].z = 0.0;
@@ -104,12 +107,39 @@ void Level::Draw(void) {
 
 	m_Player->Draw();
 	DrawLight();
+
+	// draw all of the rockets
+	std::list<Rocket*>::iterator it;
+	for (it = m_Rockets.begin() ; it != m_Rockets.end(); it++) {
+		(*it)->Draw();
+	}
 }
 
 void Level::Update(void) {
 	m_Player->Update();
 	m_PlayerLight.position.x = -(LEVEL_SIZE_X / 2.0) + m_Player->GetX();
 	m_PlayerLight.position.y = -(LEVEL_SIZE_Y / 2.0) + m_Player->GetY();
+
+	// update all of the rockets
+	std::list<Rocket*>::iterator it;
+	for (it = m_Rockets.begin() ; it != m_Rockets.end(); it++) {
+		// if dead, remove it from the list and delete it
+		if ((*it)->IsDead()) {
+			Rocket* tmp = (*it);
+			it--;
+			m_Rockets.remove(tmp);
+			delete tmp;
+		}
+		// else, update it
+		else {
+			(*it)->Update();
+		}
+	}
+
+	// if the user presses the left mouse, shoot a rocket
+	if (Input::IsButtonNewlyDown(SDL_BUTTON_LEFT)) {
+		m_Rockets.push_back(new Rocket(m_Player->GetX(), m_Player->GetY(), m_Player->GetRotation(), m_RocketTexture));
+	}
 }
 
 void Level::DrawLevelPlane(void) {

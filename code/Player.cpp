@@ -104,3 +104,6 @@ float Player::GetY(void) {
 	return m_YPos;
 }
 
+float Player::GetRotation(void) {
+	return m_Rotation;
+}

@@ -38,11 +38,15 @@ private:
 	void DrawLevelPlane(void);
 	void DrawLight(void);
 
+	std::list<Rocket*> m_Rockets;
+
 	Light m_PlayerLight;
 
 	MD2Model* m_LightModel;
 	//GLSLProgram* m_LightShader;
 	Texture* m_LightTexture;
+
+	Texture* m_RocketTexture;
 
 	GLSLProgram* m_GroundShader;
 	Texture* m_GroundTexture;

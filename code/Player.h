@@ -20,6 +20,7 @@ public:
 
 	float GetX(void);
 	float GetY(void);
+	float GetRotation(void);
 
 private:
 	float m_XPos;

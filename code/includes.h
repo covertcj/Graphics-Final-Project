@@ -14,12 +14,14 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <list>
 
 #include <SDL/SDL.h>
 #include <GL/glew.h>
 //#include <SDL/SDL_opengl.h>
 #include <GL/glu.h>
 
+class Rocket;
 class MD2Model;
 class Player;
 class GLSLProgram;
@@ -38,6 +40,7 @@ enum AnimationEnum {
 #include "Level.h"
 #include "md2model.h"
 #include "Player.h"
+#include "Rocket.h"
 #include "Shader.h"
 #include "Texture.h"
 #include "Timer.h"
@@ -64,15 +67,19 @@ using std::ifstream;
 #define LEVEL_TO_SCREEN_SCALE_Y	WINDOW_RESOLUTION_Y / LEVEL_SIZE_Y
 
 #define PLAYER_VELOCITY			2.0
+#define ROCKET_VELOCITY			10.0
+#define ROCKET_LIFE_DURATION	2.0
 
 #define MODEL_PLAYER			"data/models/Ogro/tris.md2"
 #define MODEL_ENEMY				"data/models/Ogro/tris.md2"
 #define MODEL_LIGHT				"data/models/Ball/tris.md2"
+#define MODEL_ROCKET			"data/models/Ball/tris.md2"//"data/models/Rocket/tris.md2"
 
 #define TEXTURE_GROUND			"data/textures/ground.bmp"
 #define TEXTURE_LIGHT			"data/textures/light.bmp"
 #define TEXTURE_PLAYER			"data/textures/Ogro/player.bmp"
 #define TEXTURE_ENEMY			"data/textures/Ogro/enemy.bmp"
+#define TEXTURE_ROCKET			"data/textures/rocket.bmp"
 
 #define VSHADER_GROUND			"data/shaders/ground.vp"
 #define FSHADER_GROUND			"data/shaders/ground.fp"
@@ -82,6 +89,8 @@ using std::ifstream;
 #define FSHADER_ENEMY			"data/shaders/model.fp"
 #define VSHADER_LIGHT			"data/shaders/model.vp"
 #define FSHADER_LIGHT			"data/shaders/model.fp"
+#define VSHADER_ROCKET			"data/shaders/model.vp"
+#define FSHADER_ROCKET			"data/shaders/model.fp"
 
 #define LIGHT_AMBIENT_R			0.20
 #define LIGHT_AMBIENT_G			0.20
