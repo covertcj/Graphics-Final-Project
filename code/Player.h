@@ -22,7 +22,13 @@ public:
 	float GetY(void);
 	float GetRotation(void);
 
+	bool CanShoot(void);
+	void Shoot(void);
+
 private:
+	bool m_CanShoot;
+	float m_ShotCooldown;
+
 	float m_XPos;
 	float m_YPos;
 

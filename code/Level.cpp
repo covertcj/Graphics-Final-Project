@@ -137,8 +137,11 @@ void Level::Update(void) {
 	}
 
 	// if the user presses the left mouse, shoot a rocket
-	if (Input::IsButtonNewlyDown(SDL_BUTTON_LEFT)) {
-		m_Rockets.push_back(new Rocket(m_Player->GetX(), m_Player->GetY(), m_Player->GetRotation(), m_RocketTexture));
+	if (Input::IsButtonDown(SDL_BUTTON_LEFT)) {
+		if (m_Player->CanShoot()) {
+			m_Rockets.push_back(new Rocket(m_Player->GetX(), m_Player->GetY(), m_Player->GetRotation(), m_RocketTexture));
+			m_Player->Shoot();
+		}
 	}
 }
 

@@ -20,6 +20,9 @@ Player::Player(Texture* playerTexture) {
 	m_XPos = LEVEL_SIZE_X / 2.0;
 	m_YPos = LEVEL_SIZE_Y / 2.0;
 
+	m_CanShoot = true;
+	m_ShotCooldown = 0.0;
+
 	m_Rotation = 0.0;
 }
 
@@ -74,6 +77,22 @@ void Player::Update(void) {
 		m_YPos += PLAYER_VELOCITY * dt;
 	}
 
+	// ensure the player stays in X bounds
+	if (m_XPos > LEVEL_SIZE_X - m_Model->getRadius()) {
+		m_XPos = LEVEL_SIZE_X - m_Model->getRadius();
+	}
+	else if (m_XPos < m_Model->getRadius()) {
+		m_XPos = m_Model->getRadius();
+	}
+
+	// ensure the player stays in Y bounds
+	if (m_YPos > LEVEL_SIZE_Y - m_Model->getRadius()) {
+		m_YPos = LEVEL_SIZE_Y - m_Model->getRadius();
+	}
+	else if (m_YPos < m_Model->getRadius()) {
+		m_YPos = m_Model->getRadius();
+	}
+
 	// change animation based on whether we are moving or not
 	// we don't want to reset the animation if we are already in that state
 	if ((movingDown || movingLeft || movingRight || movingUp) && m_CurrentAnimation != RUN) {
@@ -93,7 +112,18 @@ void Player::Update(void) {
 	float dy = m_YPos * LEVEL_TO_SCREEN_SCALE_Y - mouseY;
 	m_Rotation = rad2Deg(atan2(dy, dx)) + 180.0;
 
+	// update the animation
 	m_Model->update(dt);
+
+	// update the shot clock
+	if (!m_CanShoot) {
+		if (m_ShotCooldown > PLAYER_SHOT_COOLDOWN) {
+			m_ShotCooldown = 0;
+			m_CanShoot = true;
+		}
+
+		m_ShotCooldown += dt;
+	}
 }
 
 float Player::GetX(void) {
@@ -106,4 +136,12 @@ float Player::GetY(void) {
 
 float Player::GetRotation(void) {
 	return m_Rotation;
+}
+
+void Player::Shoot(void) {
+	m_CanShoot = false;
+}
+
+bool Player::CanShoot(void) {
+	return m_CanShoot;
 }

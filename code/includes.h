@@ -67,8 +67,9 @@ using std::ifstream;
 #define LEVEL_TO_SCREEN_SCALE_Y	WINDOW_RESOLUTION_Y / LEVEL_SIZE_Y
 
 #define PLAYER_VELOCITY			2.0
+#define PLAYER_SHOT_COOLDOWN	0.5
 #define ROCKET_VELOCITY			10.0
-#define ROCKET_LIFE_DURATION	2.0
+#define ROCKET_LIFE_DURATION	(LEVEL_SIZE_X + LEVEL_SIZE_Y) / ROCKET_VELOCITY
 
 #define MODEL_PLAYER			"data/models/Ogro/tris.md2"
 #define MODEL_ENEMY				"data/models/Ogro/tris.md2"
