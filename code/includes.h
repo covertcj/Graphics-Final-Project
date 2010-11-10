@@ -24,6 +24,7 @@
 class Rocket;
 class MD2Model;
 class Player;
+class Enemy;
 class GLSLProgram;
 class AppWindow;
 class TestObject;
@@ -39,6 +40,7 @@ enum AnimationEnum {
 #include "Input.h"
 #include "Level.h"
 #include "md2model.h"
+#include "Enemy.h"
 #include "Player.h"
 #include "Rocket.h"
 #include "Shader.h"
@@ -66,6 +68,7 @@ using std::ifstream;
 #define LEVEL_TO_SCREEN_SCALE_X	WINDOW_RESOLUTION_X / LEVEL_SIZE_X
 #define LEVEL_TO_SCREEN_SCALE_Y	WINDOW_RESOLUTION_Y / LEVEL_SIZE_Y
 
+#define ENEMY_VELOCITY			1.5
 #define PLAYER_VELOCITY			2.0
 #define PLAYER_SHOT_COOLDOWN	0.5
 #define ROCKET_VELOCITY			10.0

@@ -33,6 +33,7 @@ public:
 
 	void Update(void);
 	void Draw(void);
+	void spawnEnemy(float x, float y, float r);
 
 private:
 	void DrawLevelPlane(void);
@@ -53,6 +54,9 @@ private:
 
 	Player* m_Player;
 	Texture* m_PlayerTexture;
+
+	Enemy* m_Enemy;
+	Texture* m_EnemyTexture;
 
     GLuint m_vertexBuffer;
     GLuint m_texCoordBuffer;

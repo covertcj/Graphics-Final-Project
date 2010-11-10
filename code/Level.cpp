@@ -40,6 +40,9 @@ void Level::Initialize(Texture* groundTexture, Texture* lightTexture) {
 	m_PlayerTexture->Load(TEXTURE_PLAYER);
 	m_Player = new Player(m_PlayerTexture);
 
+	m_EnemyTexture = new Texture();
+	m_EnemyTexture->Load(TEXTURE_ENEMY);
+
 	m_RocketTexture = new Texture();
 	m_RocketTexture->Load(TEXTURE_ROCKET);
 
@@ -88,6 +91,9 @@ void Level::Initialize(Texture* groundTexture, Texture* lightTexture) {
 	m_PlayerLight.specular.x = LIGHT0_SPECULAR_R;
 	m_PlayerLight.specular.y = LIGHT0_SPECULAR_G;
 	m_PlayerLight.specular.z = LIGHT0_SPECULAR_B;
+
+	for (int i=0; i<1; i++)
+		Level::spawnEnemy(0, 0, (float) LEVEL_SIZE_X);
 }
 
 void Level::Destroy(void) {
@@ -105,6 +111,7 @@ void Level::Destroy(void) {
 void Level::Draw(void) {
 	DrawLevelPlane();
 
+	m_Enemy->Draw();
 	m_Player->Draw();
 	DrawLight();
 
@@ -119,6 +126,8 @@ void Level::Update(void) {
 	m_Player->Update();
 	m_PlayerLight.position.x = -(LEVEL_SIZE_X / 2.0) + m_Player->GetX();
 	m_PlayerLight.position.y = -(LEVEL_SIZE_Y / 2.0) + m_Player->GetY();
+
+	m_Enemy->Update(m_Player);
 
 	// update all of the rockets
 	std::list<Rocket*>::iterator it;
@@ -208,4 +217,17 @@ void Level::DrawLight() {
 
 		m_LightModel->render();
 	glPopMatrix();
+}
+
+void Level::spawnEnemy(float x, float y, float r)
+{
+	float angle = (rand() % 6300)/1000.0f;
+
+	m_Enemy = new Enemy(m_EnemyTexture);
+
+	m_Enemy->SetX(r*cos(angle));
+	m_Enemy->SetY(r*sin(angle));
+
+	m_Enemy->SetTargetX(m_Player->GetX());
+	m_Enemy->SetTargetY(m_Player->GetY());
 }
