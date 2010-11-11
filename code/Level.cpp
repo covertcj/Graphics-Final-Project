@@ -92,8 +92,11 @@ void Level::Initialize(Texture* groundTexture, Texture* lightTexture) {
 	m_PlayerLight.specular.y = LIGHT0_SPECULAR_G;
 	m_PlayerLight.specular.z = LIGHT0_SPECULAR_B;
 
-	for (int i=0; i<1; i++)
-		Level::spawnEnemy(0, 0, (float) LEVEL_SIZE_X);
+	m_EnemyTimer = 0.0;
+	m_EnemyTimeBetween = ENEMY_SPAWN_COOL;
+
+	//for (int i=0; i<1; i++)
+		//Level::spawnEnemy(0, 0, (float) LEVEL_SIZE_X);
 }
 
 void Level::Destroy(void) {
@@ -128,6 +131,8 @@ void Level::Draw(void) {
 }
 
 void Level::Update(void) {
+	float dt = Timer::GetDT();
+
 	m_Player->Update();
 	m_PlayerLight.position.x = -(LEVEL_SIZE_X / 2.0) + m_Player->GetX();
 	m_PlayerLight.position.y = -(LEVEL_SIZE_Y / 2.0) + m_Player->GetY();
@@ -203,6 +208,22 @@ void Level::Update(void) {
 			}
 		}
 	}
+
+	// enemy spawning
+	m_EnemyTimer += dt;
+	if (m_EnemyTimer > m_EnemyTimeBetween) {
+		// reset the timer
+		m_EnemyTimer = 0.0;
+		// make the next enemy spawn slightly faster
+		m_EnemyTimeBetween -= ENEMY_SPAWN_COOL_RED;
+		// make sure enemies don't spawn too fast
+		if (m_EnemyTimeBetween < ENEMY_SPAWN_COOL_MIN) {
+			m_EnemyTimeBetween = ENEMY_SPAWN_COOL_MIN;
+		}
+
+		// spawn the enemy
+		Level::spawnEnemy();
+	}
 }
 
 void Level::DrawLevelPlane(void) {
@@ -270,14 +291,36 @@ void Level::DrawLight() {
 	glPopMatrix();
 }
 
-void Level::spawnEnemy(float x, float y, float r)
+void Level::spawnEnemy(void)
 {
-	float angle = (rand() % 6300)/1000.0f;
+	float x, y;
+	int side = rand() % 4;
+
+	// if the right side...
+	if (side == 0) {
+		x = LEVEL_SIZE_X;
+		y = (rand() % (10 * (int)(LEVEL_SIZE_Y))) / 10.0;;
+	}
+	// if the top side...
+	else if (side == 1) {
+		x = (rand() % (10 * (int)(LEVEL_SIZE_X))) / 10.0;;
+		y = LEVEL_SIZE_Y;
+	}
+	// if the left side...
+	else if (side == 2) {
+		x = 0;
+		y = (rand() % (10 * (int)(LEVEL_SIZE_Y))) / 10.0;;
+	}
+	// if bottom side...
+	else {
+		x = (rand() % (10 * (int)(LEVEL_SIZE_X))) / 10.0;;
+		y = 0;
+	}
 
 	Enemy* enemy = new Enemy(m_EnemyTexture);
 
-	enemy->SetX(r*cos(angle));
-	enemy->SetY(r*sin(angle));
+	enemy->SetX(x);
+	enemy->SetY(y);
 
 	enemy->SetTargetX(m_Player->GetX());
 	enemy->SetTargetY(m_Player->GetY());

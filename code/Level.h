@@ -33,12 +33,14 @@ public:
 
 	void Update(void);
 	void Draw(void);
-	void spawnEnemy(float x, float y, float r);
+	void spawnEnemy(void);
 
 private:
 	void DrawLevelPlane(void);
 	void DrawLight(void);
 
+	float m_EnemyTimer;
+	float m_EnemyTimeBetween;
 	std::list<Rocket*> m_Rockets;
 	std::list<Enemy*> m_Enemies;
 

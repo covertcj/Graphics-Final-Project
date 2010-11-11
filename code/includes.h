@@ -58,7 +58,7 @@ using std::ifstream;
 #define WINDOW_RESOLUTION_X	1024
 #define WINDOW_RESOLUTION_Y	1024
 #define WINDOW_BPP			16
-#define WINDOW_TITLE		"Title"
+#define WINDOW_TITLE		"Ogro Invasion"
 
 #define LEVEL_SIZE_X			15.0
 #define LEVEL_SIZE_Y			15.0
@@ -69,8 +69,13 @@ using std::ifstream;
 #define LEVEL_TO_SCREEN_SCALE_Y	WINDOW_RESOLUTION_Y / LEVEL_SIZE_Y
 
 #define ENEMY_VELOCITY			1.5
-#define PLAYER_VELOCITY			2.0
+#define ENEMY_SPAWN_COOL		5
+#define ENEMY_SPAWN_COOL_MIN	0.5
+#define ENEMY_SPAWN_COOL_RED	0.1
+
+#define PLAYER_VELOCITY			2.2
 #define PLAYER_SHOT_COOLDOWN	0.5
+
 #define ROCKET_VELOCITY			10.0
 #define ROCKET_LIFE_DURATION	(LEVEL_SIZE_X + LEVEL_SIZE_Y) / ROCKET_VELOCITY
 

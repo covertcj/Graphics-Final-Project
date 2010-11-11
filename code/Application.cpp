@@ -18,6 +18,8 @@ Application::~Application(void) {
 void Application::Initialize(void) {
 	// startup the input handler
 	//g_InputTask = new Input();
+	srand(time(0));
+
 	InitSDL();
 
 	Input::Initialize();
