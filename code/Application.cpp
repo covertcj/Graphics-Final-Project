@@ -105,6 +105,14 @@ void Application::Update(void) {
 	Timer::Update();
 	Input::Update();
 
+	if (Input::IsKeyNewlyDown(SDLK_F2)) {
+		m_Level->Destroy();
+		delete m_Level;
+
+		m_Level = new Level();
+		m_Level->Initialize(m_GroundTexture, m_LightTexture);
+	}
+
 	//m_obj->Update();
 	m_Level->Update();
 
