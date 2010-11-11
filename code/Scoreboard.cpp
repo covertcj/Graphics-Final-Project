@@ -59,12 +59,22 @@ void glDisable2D()
 }
 
 void Scoreboard::Draw(void) {
+	// setup the text to draw
 	std::stringstream secondsAlive;
 	secondsAlive << "Seconds Alive: " << m_SecondsAlive;
 	std::stringstream shotsFired;
 	shotsFired << "Shots Fired: " << m_ShotsFired;
 	std::stringstream enemiesKilled;
 	enemiesKilled << "Enemies Killed: " << m_EnemiesKilled;
+	std::stringstream accuracy;
+	if (m_ShotsFired > 0) {
+		accuracy << "Accuracy: " << ((float)m_EnemiesKilled / (float)m_ShotsFired) * 100.0f << "%";
+	}
+	else {
+		accuracy << "Accuracy: N/A";
+	}
+	std::stringstream fps;
+	fps << "FPS: " << m_FPS;
 
 	SDL_Color color;
 	color.r = 255;
@@ -73,21 +83,33 @@ void Scoreboard::Draw(void) {
 
 	SDL_Rect position;
 	position.x = WINDOW_RESOLUTION_X / 3;
-	position.y = WINDOW_RESOLUTION_Y / 2;
+	position.y = WINDOW_RESOLUTION_Y / 1.5;
+
+	/*glPushMatrix();
+		glLoadIdentity();
+		glColor3f(0.0, 0.0, 0.0);
+		glBegin(GL_QUADS);
+			glVertex3f(5.0, 5.0, -5.0);
+			glVertex3f(10.0, 5.0, -5.0);
+			glVertex3f(10.0, 10.0, -5.0);
+			glVertex3f(5.0, 10.0, -5.0);
+		glEnd();
+	glPopMatrix();*/
 
 	// allow you to draw text in 2D mode
 	glEnable2D();
 	glDisable(GL_DEPTH_TEST);
-
-	glPushMatrix();
-	glLoadIdentity();
 	// render text
 	RenderText(secondsAlive.str().c_str(), m_Font, color, &position);
 	position.y -= position.h;
 	RenderText(shotsFired.str().c_str(), m_Font, color, &position);
 	position.y -= position.h;
 	RenderText(enemiesKilled.str().c_str(), m_Font, color, &position);
-	glPopMatrix();
+	position.y -= position.h;
+	RenderText(accuracy.str().c_str(), m_Font, color, &position);
+	position.x = 0;
+	position.y = 0;
+	RenderText(fps.str().c_str(), m_Font, color, &position);
 
 	// exit 2D mode
 	glEnable(GL_DEPTH_TEST);
@@ -102,8 +124,21 @@ void Scoreboard::Shoot(void) {
 	m_ShotsFired++;
 }
 
-void Scoreboard::Update(void) {
-	m_SecondsAlive += Timer::GetDT();
+void Scoreboard::Update(bool isPlayerDead) {
+	float dt = Timer::GetDT();
+	if (!isPlayerDead) {
+		m_SecondsAlive += dt;
+	}
+
+	// find average FPS
+	m_FPS = 0.0;
+	for (int i = 1; i < FPS_AVERAGE_COUNT; i++) {
+		m_DTs[i] = m_DTs[i - 1];
+		m_FPS += m_DTs[i];
+	}
+	m_DTs[0] = dt;
+	m_FPS += dt;
+	m_FPS = FPS_AVERAGE_COUNT / m_FPS;
 }
 
 int nextpoweroftwo(int x)

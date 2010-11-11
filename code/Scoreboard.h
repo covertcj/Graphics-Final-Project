@@ -21,7 +21,7 @@ public:
 	void Draw(void);
 	void KillEnemy(void);
 	void Shoot(void);
-	void Update(void);
+	void Update(bool isPlayerDead);
 
 private:
 	void RenderText(const char *text, TTF_Font *font, SDL_Color color, SDL_Rect *location);
@@ -31,6 +31,10 @@ private:
 	float m_SecondsAlive;
 	int m_ShotsFired;
 	int m_EnemiesKilled;
+
+	float m_FPS;
+
+	float m_DTs[FPS_AVERAGE_COUNT];
 };
 
 #endif /* SCOREBOARD_H_ */

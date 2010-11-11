@@ -39,20 +39,6 @@ enum AnimationEnum {
 	RUN
 };
 
-#include "Application.h"
-#include "Input.h"
-#include "Level.h"
-#include "md2model.h"
-#include "Enemy.h"
-#include "Player.h"
-#include "Rocket.h"
-#include "Scoreboard.h"
-#include "Shader.h"
-#include "Texture.h"
-#include "Timer.h"
-#include "Window.h"
-#include "TestObject.h"
-
 using std::string;
 using std::vector;
 using std::map;
@@ -80,7 +66,7 @@ using std::ifstream;
 #define ENEMY_SPAWN_COOL		3.5
 #define ENEMY_SPAWN_COOL_MIN	0.5
 #define ENEMY_SPAWN_COOL_RED	0.1
-#define ENEMY_DECAY_TIMER		15.0
+#define ENEMY_DECAY_TIMER		30.0
 
 #define PLAYER_VELOCITY			2.2
 #define PLAYER_VELOCITY_DIAG	PLAYER_VELOCITY / SQUARE_ROOT_2
@@ -131,5 +117,21 @@ using std::ifstream;
 
 #define LIGHT_ROTATION_SPEED	90.0
 #define LIGHT_DISTANCE			0.75
+
+#define FPS_AVERAGE_COUNT		20
+
+#include "Application.h"
+#include "Input.h"
+#include "Level.h"
+#include "md2model.h"
+#include "Enemy.h"
+#include "Player.h"
+#include "Rocket.h"
+#include "Scoreboard.h"
+#include "Shader.h"
+#include "Texture.h"
+#include "Timer.h"
+#include "Window.h"
+#include "TestObject.h"
 
 #endif /* INCLUDES_H_ */

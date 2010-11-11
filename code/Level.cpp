@@ -249,7 +249,7 @@ void Level::Update(void) {
 		}
 	}
 
-	m_Scoreboard->Update();
+	m_Scoreboard->Update(m_Player->isDead());
 }
 
 void Level::DrawLevelPlane(void) {

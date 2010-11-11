@@ -47,7 +47,7 @@ void Application::InitOpenGL(void) {
 	// TODO Enable parts of OpenGL
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-	glEnable(GL_TEXTURE_2D);
+	//glEnable(GL_TEXTURE_2D);
 }
 
 void Application::LoadTextures(void) {
