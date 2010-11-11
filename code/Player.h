@@ -20,12 +20,15 @@ public:
 
 	float GetX(void);
 	float GetY(void);
+	float GetRadius(void);
 	float GetRotation(void);
 
 	bool CanShoot(void);
 	void Shoot(void);
+	void Kill(void);
 
 private:
+	bool m_IsDead;
 	bool m_CanShoot;
 	float m_ShotCooldown;
 

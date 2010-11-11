@@ -20,6 +20,7 @@ Player::Player(Texture* playerTexture) {
 	m_XPos = LEVEL_SIZE_X / 2.0;
 	m_YPos = LEVEL_SIZE_Y / 2.0;
 
+	m_IsDead = false;
 	m_CanShoot = true;
 	m_ShotCooldown = 0.0;
 
@@ -53,6 +54,13 @@ void Player::Draw(void) {
 
 void Player::Update(void) {
 	float dt = Timer::GetDT();
+
+	// update the animation
+	m_Model->update(dt);
+
+	if (m_IsDead) {
+		return;
+	}
 
 	// find out what directions the player is moving
 	bool movingLeft = Input::IsKeyDown(SDLK_a);
@@ -112,9 +120,6 @@ void Player::Update(void) {
 	float dy = m_YPos * LEVEL_TO_SCREEN_SCALE_Y - mouseY;
 	m_Rotation = rad2Deg(atan2(dy, dx)) + 180.0;
 
-	// update the animation
-	m_Model->update(dt);
-
 	// update the shot clock
 	if (!m_CanShoot) {
 		if (m_ShotCooldown > PLAYER_SHOT_COOLDOWN) {
@@ -144,4 +149,14 @@ void Player::Shoot(void) {
 
 bool Player::CanShoot(void) {
 	return m_CanShoot;
+}
+
+float Player::GetRadius(void) {
+	return m_Model->getRadius();
+}
+
+void Player::Kill(void) {
+	m_IsDead = true;
+
+	m_Model->setAnimation(Animation::DEATH1);
 }

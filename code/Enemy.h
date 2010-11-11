@@ -22,9 +22,14 @@ public:
 	void SetY(float y);
 	void SetTargetX(float x);
 	void SetTargetY(float y);
+
 	float GetX(void);
 	float GetY(void);
 	float GetRotation(void);
+	float GetRadius(void);
+
+	bool IsDead(void);
+	void Kill(void);
 
 private:
 	float m_XPos;
@@ -32,6 +37,8 @@ private:
 	float m_XTarget;
 	float m_YTarget;
 	float m_Rotation;
+
+	bool m_IsDead;
 
 	AnimationEnum m_CurrentAnimation;
 

@@ -21,7 +21,7 @@ Enemy::Enemy(Texture* enemyTexture) {
 	m_YPos    = 0.0f;
 	m_XTarget = 0.0f;
 	m_YTarget = 0.0f;
-
+	m_IsDead = false;
 }
 
 Enemy::~Enemy(void) {
@@ -36,7 +36,7 @@ void Enemy::Draw(void) {
 		// offset vertically by half the player so as to not be underground
 		glTranslatef(m_XPos, m_YPos, m_Model->getRadius());
 
-		// bind the texture
+		// bind the texPlayerture
 		m_Texture->Bind();
 
 		// rotate the player so he is standing up rather than laying sideways
@@ -110,3 +110,14 @@ float Enemy::GetRotation(void) {
 	return m_Rotation;
 }
 
+float Enemy::GetRadius(void) {
+	return m_Model->getRadius();
+}
+
+bool Enemy::IsDead(void) {
+	return m_IsDead;
+}
+
+void Enemy::Kill(void) {
+	m_IsDead = true;
+}

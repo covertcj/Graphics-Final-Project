@@ -111,14 +111,19 @@ void Level::Destroy(void) {
 void Level::Draw(void) {
 	DrawLevelPlane();
 
-	m_Enemy->Draw();
+	//m_Enemy->Draw();
 	m_Player->Draw();
 	DrawLight();
 
 	// draw all of the rockets
-	std::list<Rocket*>::iterator it;
-	for (it = m_Rockets.begin() ; it != m_Rockets.end(); it++) {
-		(*it)->Draw();
+	std::list<Rocket*>::iterator rocket_it;
+	for (rocket_it = m_Rockets.begin() ; rocket_it != m_Rockets.end(); rocket_it++) {
+		(*rocket_it)->Draw();
+	}
+
+	std::list<Enemy*>::iterator enemy_it;
+	for (enemy_it = m_Enemies.begin() ; enemy_it != m_Enemies.end(); enemy_it++) {
+		(*enemy_it)->Draw();
 	}
 }
 
@@ -127,21 +132,36 @@ void Level::Update(void) {
 	m_PlayerLight.position.x = -(LEVEL_SIZE_X / 2.0) + m_Player->GetX();
 	m_PlayerLight.position.y = -(LEVEL_SIZE_Y / 2.0) + m_Player->GetY();
 
-	m_Enemy->Update(m_Player);
+	//m_Enemy->Update(m_Player);
+	// update all of the enemies
+	std::list<Enemy*>::iterator enemy_it;
+	for (enemy_it = m_Enemies.begin() ; enemy_it != m_Enemies.end(); enemy_it++) {
+		// if dead, remove it from the list and delete it
+		if ((*enemy_it)->IsDead()) {
+			Enemy* tmp = (*enemy_it);
+			enemy_it--;
+			m_Enemies.remove(tmp);
+			delete tmp;
+		}
+		// else, update it
+		else {
+			(*enemy_it)->Update(m_Player);
+		}
+	}
 
 	// update all of the rockets
-	std::list<Rocket*>::iterator it;
-	for (it = m_Rockets.begin() ; it != m_Rockets.end(); it++) {
+	std::list<Rocket*>::iterator rocket_it;
+	for (rocket_it = m_Rockets.begin() ; rocket_it != m_Rockets.end(); rocket_it++) {
 		// if dead, remove it from the list and delete it
-		if ((*it)->IsDead()) {
-			Rocket* tmp = (*it);
-			it--;
+		if ((*rocket_it)->IsDead()) {
+			Rocket* tmp = (*rocket_it);
+			rocket_it--;
 			m_Rockets.remove(tmp);
 			delete tmp;
 		}
 		// else, update it
 		else {
-			(*it)->Update();
+			(*rocket_it)->Update();
 		}
 	}
 
@@ -150,6 +170,20 @@ void Level::Update(void) {
 		if (m_Player->CanShoot()) {
 			m_Rockets.push_back(new Rocket(m_Player->GetX(), m_Player->GetY(), m_Player->GetRotation(), m_RocketTexture));
 			m_Player->Shoot();
+		}
+	}
+
+	// check if the player is colliding with any enemies
+	for (enemy_it = m_Enemies.begin(); enemy_it != m_Enemies.end(); enemy_it++) {
+		float dx = (*enemy_it)->GetX() - m_Player->GetX();
+		float dy = (*enemy_it)->GetY() - m_Player->GetY();
+
+		float dist = sqrt(dx * dx + dy * dy);
+		float radii = m_Player->GetRadius() + (*enemy_it)->GetRadius();
+
+		// if the distance is less than the added radii, then a collision
+		if (dist < radii) {
+			// TODO: Perform a collision
 		}
 	}
 }
@@ -223,11 +257,13 @@ void Level::spawnEnemy(float x, float y, float r)
 {
 	float angle = (rand() % 6300)/1000.0f;
 
-	m_Enemy = new Enemy(m_EnemyTexture);
+	Enemy* enemy = new Enemy(m_EnemyTexture);
 
-	m_Enemy->SetX(r*cos(angle));
-	m_Enemy->SetY(r*sin(angle));
+	enemy->SetX(r*cos(angle));
+	enemy->SetY(r*sin(angle));
 
-	m_Enemy->SetTargetX(m_Player->GetX());
-	m_Enemy->SetTargetY(m_Player->GetY());
+	enemy->SetTargetX(m_Player->GetX());
+	enemy->SetTargetY(m_Player->GetY());
+
+	m_Enemies.push_back(enemy);
 }

@@ -40,6 +40,7 @@ private:
 	void DrawLight(void);
 
 	std::list<Rocket*> m_Rockets;
+	std::list<Enemy*> m_Enemies;
 
 	Light m_PlayerLight;
 
@@ -55,7 +56,7 @@ private:
 	Player* m_Player;
 	Texture* m_PlayerTexture;
 
-	Enemy* m_Enemy;
+	//Enemy* m_Enemy;
 	Texture* m_EnemyTexture;
 
     GLuint m_vertexBuffer;
