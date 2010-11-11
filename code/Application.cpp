@@ -54,8 +54,8 @@ void Application::LoadTextures(void) {
 	m_LightTexture = new Texture();
 	m_LightTexture->Load(TEXTURE_LIGHT);
 
-	m_GroundTexture = new Texture();
-	m_GroundTexture->Load(TEXTURE_GROUND);
+	m_GroundTexture = 0;
+	LoadRandomGroundTexture();
 }
 
 void Application::Terminate(void) {
@@ -111,6 +111,8 @@ void Application::Update(void) {
 		m_Level->Destroy();
 		delete m_Level;
 
+		LoadRandomGroundTexture();
+
 		m_Level = new Level();
 		m_Level->Initialize(m_GroundTexture, m_LightTexture);
 	}
@@ -161,4 +163,27 @@ bool Application::ProcessEvents(void) {
 
 	// all events are handled, continue on
 	return true;
+}
+
+
+
+void Application::LoadRandomGroundTexture(void) {
+	if (m_GroundTexture != 0) {
+		m_GroundTexture->Destroy();
+		delete m_GroundTexture;
+	}
+
+	m_GroundTexture = new Texture();
+
+	int r = rand() % 3;
+
+	if (r == 0) {
+		m_GroundTexture->Load(TEXTURE_GROUND);
+	}
+	else if (r == 1) {
+		m_GroundTexture->Load(TEXTURE_GROUND2);
+	}
+	else if (r == 2) {
+		m_GroundTexture->Load(TEXTURE_GROUND3);
+	}
 }

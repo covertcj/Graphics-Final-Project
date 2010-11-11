@@ -26,7 +26,7 @@ Player::Player(Texture* playerTexture) {
 	m_CanShoot     = true;
 	m_ShotCooldown = 0.0;
 	m_Rotation     = 0.0;
-	m_EnemySpeed   = 0.8;
+	m_EnemySpeed   = ENEMY_VELOCITY;
 }
 
 Player::~Player(void) {
@@ -186,10 +186,10 @@ void Player::incKillCount() {
 	{
 		m_LevelKills  = (m_LevelKills >= 10) ? m_LevelKills+10 : m_LevelKills*2;
 		m_Kills       = 0;
-		m_EnemySpeed += .1;
+		m_EnemySpeed += .05;
 
-		if (m_EnemySpeed > PLAYER_VELOCITY)
-			m_EnemySpeed = PLAYER_VELOCITY;
+		if (m_EnemySpeed > PLAYER_VELOCITY + 0.2)
+			m_EnemySpeed = PLAYER_VELOCITY + 0.2;
 	}
 }
 

@@ -24,6 +24,7 @@ private:
 	void InitOpenGL(void);
 
 	void LoadTextures(void);
+	void LoadRandomGroundTexture(void);
 
 	bool ProcessEvents(void);
 	void Resize(int x, int y);

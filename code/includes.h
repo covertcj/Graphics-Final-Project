@@ -70,10 +70,11 @@ using std::ifstream;
 #define LEVEL_TO_SCREEN_SCALE_X	WINDOW_RESOLUTION_X / LEVEL_SIZE_X
 #define LEVEL_TO_SCREEN_SCALE_Y	WINDOW_RESOLUTION_Y / LEVEL_SIZE_Y
 
+#define ENEMY_VELOCITY			0.8
 #define ENEMY_SPAWN_COOL		3.5
 #define ENEMY_SPAWN_COOL_MIN	0.5
 #define ENEMY_SPAWN_COOL_RED	0.1
-#define ENEMY_DECAY_TIMER		3.0
+#define ENEMY_DECAY_TIMER		15.0
 
 #define PLAYER_VELOCITY			2.2
 #define PLAYER_VELOCITY_DIAG	PLAYER_VELOCITY / SQUARE_ROOT_2
@@ -88,6 +89,8 @@ using std::ifstream;
 #define MODEL_ROCKET			"data/models/Ball/tris.md2"//"data/models/Rocket/tris.md2"
 
 #define TEXTURE_GROUND			"data/textures/ground.bmp"
+#define TEXTURE_GROUND2			"data/textures/ground2.bmp"
+#define TEXTURE_GROUND3			"data/textures/ground3.bmp"
 #define TEXTURE_LIGHT			"data/textures/light.bmp"
 #define TEXTURE_PLAYER			"data/textures/Ogro/player.bmp"
 #define TEXTURE_ENEMY			"data/textures/Ogro/enemy.bmp"
