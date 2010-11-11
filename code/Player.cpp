@@ -69,19 +69,32 @@ void Player::Update(void) {
 	bool movingUp = Input::IsKeyDown(SDLK_w);
 
 	// move the player
-	if (movingLeft) {
+	if (movingLeft && movingDown) {
+		m_XPos -= PLAYER_VELOCITY_DIAG * dt;
+		m_YPos -= PLAYER_VELOCITY_DIAG * dt;
+	}
+	else if (movingLeft && movingUp) {
+		m_XPos -= PLAYER_VELOCITY_DIAG * dt;
+		m_YPos += PLAYER_VELOCITY_DIAG * dt;
+	}
+	else if (movingRight && movingDown) {
+		m_XPos += PLAYER_VELOCITY_DIAG * dt;
+		m_YPos -= PLAYER_VELOCITY_DIAG * dt;
+	}
+	else if (movingRight && movingUp) {
+		m_XPos += PLAYER_VELOCITY_DIAG * dt;
+		m_YPos += PLAYER_VELOCITY_DIAG * dt;
+	}
+	else if (movingLeft) {
 		m_XPos -= PLAYER_VELOCITY * dt;
 	}
-
-	if (movingRight) {
+	else if (movingRight) {
 		m_XPos += PLAYER_VELOCITY * dt;
 	}
-
-	if (movingDown) {
+	else if (movingDown) {
 		m_YPos -= PLAYER_VELOCITY * dt;
 	}
-
-	if (movingUp) {
+	else if (movingUp) {
 		m_YPos += PLAYER_VELOCITY * dt;
 	}
 

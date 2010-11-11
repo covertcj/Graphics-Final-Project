@@ -54,6 +54,8 @@ using std::vector;
 using std::map;
 using std::ifstream;
 
+#define SQUARE_ROOT_2		1.41421356
+
 #define WINDOW_FULLSCREEN	false
 #define WINDOW_RESOLUTION_X	1024
 #define WINDOW_RESOLUTION_Y	1024
@@ -74,6 +76,7 @@ using std::ifstream;
 #define ENEMY_SPAWN_COOL_RED	0.1
 
 #define PLAYER_VELOCITY			2.2
+#define PLAYER_VELOCITY_DIAG	PLAYER_VELOCITY / SQUARE_ROOT_2
 #define PLAYER_SHOT_COOLDOWN	0.5
 
 #define ROCKET_VELOCITY			10.0
