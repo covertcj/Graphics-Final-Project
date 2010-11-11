@@ -94,9 +94,6 @@ void Level::Initialize(Texture* groundTexture, Texture* lightTexture) {
 
 	m_EnemyTimer = 0.0;
 	m_EnemyTimeBetween = ENEMY_SPAWN_COOL;
-
-	//for (int i=0; i<1; i++)
-		//Level::spawnEnemy(0, 0, (float) LEVEL_SIZE_X);
 }
 
 void Level::Destroy(void) {
@@ -203,6 +200,7 @@ void Level::Update(void) {
 
 			// if the distance is less than the added radii, then a collision
 			if (dist < radii) {
+				m_Player->incKillCount();
 				(*enemy_it)->Kill();
 				(*rocket_it)->Kill();
 			}
@@ -210,19 +208,22 @@ void Level::Update(void) {
 	}
 
 	// enemy spawning
-	m_EnemyTimer += dt;
-	if (m_EnemyTimer > m_EnemyTimeBetween) {
-		// reset the timer
-		m_EnemyTimer = 0.0;
-		// make the next enemy spawn slightly faster
-		m_EnemyTimeBetween -= ENEMY_SPAWN_COOL_RED;
-		// make sure enemies don't spawn too fast
-		if (m_EnemyTimeBetween < ENEMY_SPAWN_COOL_MIN) {
-			m_EnemyTimeBetween = ENEMY_SPAWN_COOL_MIN;
-		}
+	if (!m_Player->isDead())
+	{
+		m_EnemyTimer += dt;
+		if (m_EnemyTimer > m_EnemyTimeBetween) {
+			// reset the timer
+			m_EnemyTimer = 0.0;
+			// make the next enemy spawn slightly faster
+			m_EnemyTimeBetween -= ENEMY_SPAWN_COOL_RED;
+			// make sure enemies don't spawn too fast
+			if (m_EnemyTimeBetween < ENEMY_SPAWN_COOL_MIN) {
+				m_EnemyTimeBetween = ENEMY_SPAWN_COOL_MIN;
+			}
 
-		// spawn the enemy
-		Level::spawnEnemy();
+			// spawn the enemy
+			Level::spawnEnemy();
+		}
 	}
 }
 

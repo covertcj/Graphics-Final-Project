@@ -18,13 +18,15 @@ Player::Player(Texture* playerTexture) {
 	m_Model->load(MODEL_PLAYER);
 
 	m_XPos = LEVEL_SIZE_X / 2.0;
-	m_YPos = LEVEL_SIZE_Y / 2.0;
+	m_YPos = LEVEL_SIZE_Y / 2.0+2;
 
-	m_IsDead = false;
-	m_CanShoot = true;
+	m_Kills        = 0;
+	m_LevelKills   = 5;
+	m_IsDead       = false;
+	m_CanShoot     = true;
 	m_ShotCooldown = 0.0;
-
-	m_Rotation = 0.0;
+	m_Rotation     = 0.0;
+	m_EnemySpeed   = 0.8;
 }
 
 Player::~Player(void) {
@@ -172,4 +174,25 @@ void Player::Kill(void) {
 	m_IsDead = true;
 
 	m_Model->setAnimation(Animation::DEATH1);
+}
+
+bool Player::isDead() {
+	return m_IsDead;
+}
+
+void Player::incKillCount() {
+	m_Kills += 1;
+	if (m_Kills >= m_LevelKills)
+	{
+		m_LevelKills  = (m_LevelKills >= 10) ? m_LevelKills+10 : m_LevelKills*2;
+		m_Kills       = 0;
+		m_EnemySpeed += .1;
+
+		if (m_EnemySpeed > PLAYER_VELOCITY)
+			m_EnemySpeed = PLAYER_VELOCITY;
+	}
+}
+
+float Player::getEnemySpeed() {
+	return m_EnemySpeed;
 }

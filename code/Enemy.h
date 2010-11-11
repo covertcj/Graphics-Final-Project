@@ -30,6 +30,8 @@ public:
 
 	bool IsDead(void);
 	void Kill(void);
+	void move(Player* Player);
+	void checkTarget(Player* player);
 
 private:
 	float m_XPos;
@@ -39,6 +41,7 @@ private:
 	float m_Rotation;
 
 	bool m_IsDead;
+	bool m_IsMoving;
 
 	AnimationEnum m_CurrentAnimation;
 

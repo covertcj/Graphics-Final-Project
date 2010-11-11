@@ -22,20 +22,26 @@ public:
 	float GetY(void);
 	float GetRadius(void);
 	float GetRotation(void);
+	float getEnemySpeed(void);
 
 	bool CanShoot(void);
 	void Shoot(void);
 	void Kill(void);
+	bool isDead(void);
+	void incKillCount(void);
 
 private:
 	bool m_IsDead;
 	bool m_CanShoot;
-	float m_ShotCooldown;
 
+	int m_Kills;
+	int m_LevelKills;
+
+	float m_ShotCooldown;
 	float m_XPos;
 	float m_YPos;
-
 	float m_Rotation;
+	float m_EnemySpeed;
 
 	AnimationEnum m_CurrentAnimation;
 
