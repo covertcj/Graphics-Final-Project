@@ -57,3 +57,15 @@ void Rocket::Update(void) {
 bool Rocket::IsDead(void) {
 	return (m_HasColided || m_Duration > ROCKET_LIFE_DURATION);
 }
+
+float Rocket::GetX(void) {
+	return m_XPos;
+}
+
+float Rocket::GetY(void) {
+	return m_YPos;
+}
+
+void Rocket::Kill(void) {
+	m_HasColided = true;
+}

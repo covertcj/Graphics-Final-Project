@@ -18,7 +18,11 @@ public:
 	void Draw(void);
 	void Update(void);
 
+	void Kill(void);
+
 	bool IsDead(void);
+	float GetX(void);
+	float GetY(void);
 
 private:
 	float m_XPos;

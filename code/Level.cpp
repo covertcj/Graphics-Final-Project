@@ -183,8 +183,24 @@ void Level::Update(void) {
 
 		// if the distance is less than the added radii, then a collision
 		if (dist < radii) {
-			// TODO: Perform a collision
 			m_Player->Kill();
+		}
+	}
+
+	// check if the player is colliding with any enemies
+	for (enemy_it = m_Enemies.begin(); enemy_it != m_Enemies.end(); enemy_it++) {
+		for (rocket_it = m_Rockets.begin(); rocket_it != m_Rockets.end(); rocket_it++) {
+			float dx = (*rocket_it)->GetX() - (*enemy_it)->GetX();
+			float dy = (*rocket_it)->GetY() - (*enemy_it)->GetY();
+
+			float dist = sqrt(dx * dx + dy * dy);
+			float radii = (*enemy_it)->GetRadius();// + (*enemy_it)->GetRadius();
+
+			// if the distance is less than the added radii, then a collision
+			if (dist < radii) {
+				(*enemy_it)->Kill();
+				(*rocket_it)->Kill();
+			}
 		}
 	}
 }
