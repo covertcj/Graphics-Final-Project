@@ -17,6 +17,7 @@ typedef struct SVec3 {
 } Vec3;
 
 typedef struct SLight {
+	float rotation;
 	Vec3 position;
 	Vec3 diffuse;
 	Vec3 ambient;

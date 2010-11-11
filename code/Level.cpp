@@ -92,6 +92,8 @@ void Level::Initialize(Texture* groundTexture, Texture* lightTexture) {
 	m_PlayerLight.specular.y = LIGHT0_SPECULAR_G;
 	m_PlayerLight.specular.z = LIGHT0_SPECULAR_B;
 
+	m_PlayerLight.rotation = 0.0f;
+
 	m_EnemyTimer = 0.0;
 	m_EnemyTimeBetween = ENEMY_SPAWN_COOL;
 
@@ -143,6 +145,10 @@ void Level::Update(void) {
 	m_Player->Update();
 	m_PlayerLight.position.x = -(LEVEL_SIZE_X / 2.0) + m_Player->GetX();
 	m_PlayerLight.position.y = -(LEVEL_SIZE_Y / 2.0) + m_Player->GetY();
+	m_PlayerLight.rotation += LIGHT_ROTATION_SPEED * dt;
+	if (m_PlayerLight.rotation >= 360.0) {
+		m_PlayerLight.rotation -= 360.0;
+	}
 
 	//m_Enemy->Update(m_Player);
 	// update all of the enemies
@@ -247,6 +253,11 @@ void Level::Update(void) {
 }
 
 void Level::DrawLevelPlane(void) {
+	float lightx = m_PlayerLight.position.x;
+	float lighty = m_PlayerLight.position.y;
+
+	lightx += cos(degreesToRadians(m_PlayerLight.rotation)) * LIGHT_DISTANCE;
+	lighty += sin(degreesToRadians(m_PlayerLight.rotation)) * LIGHT_DISTANCE;
 
     static float modelviewMatrix[16];
     static float projectionMatrix[16];
@@ -260,7 +271,7 @@ void Level::DrawLevelPlane(void) {
 	m_GroundShader->sendUniform4x4("modelview_matrix", modelviewMatrix);
 	m_GroundShader->sendUniform4x4("projection_matrix", projectionMatrix);
 	m_GroundShader->sendUniform("ambientLight", LIGHT_AMBIENT_R, LIGHT_AMBIENT_G, LIGHT_AMBIENT_B);
-	m_GroundShader->sendUniform("light0Position", m_PlayerLight.position.x, m_PlayerLight.position.y, m_PlayerLight.position.z);
+	m_GroundShader->sendUniform("light0Position", lightx, lighty, m_PlayerLight.position.z);
 	m_GroundShader->sendUniform("light0Ambient", m_PlayerLight.ambient.x, m_PlayerLight.ambient.y, m_PlayerLight.ambient.z);
 	m_GroundShader->sendUniform("light0Diffuse", m_PlayerLight.diffuse.x, m_PlayerLight.diffuse.y, m_PlayerLight.diffuse.z);
 	m_GroundShader->sendUniform("light0ConstantAttenuation", 0.15f);
@@ -289,23 +300,16 @@ void Level::DrawLevelPlane(void) {
 }
 
 void Level::DrawLight() {
-    /*static float modelviewMatrix[16];
-    static float projectionMatrix[16];
+	float x = m_PlayerLight.position.x + (LEVEL_SIZE_X / 2.0);
+	float y = m_PlayerLight.position.y + (LEVEL_SIZE_X / 2.0);
 
-    glGetFloatv(GL_MODELVIEW_MATRIX, modelviewMatrix);
-    glGetFloatv(GL_PROJECTION_MATRIX, projectionMatrix);*/
+	x += cos(degreesToRadians(m_PlayerLight.rotation)) * LIGHT_DISTANCE;
+	y += sin(degreesToRadians(m_PlayerLight.rotation)) * LIGHT_DISTANCE;
 
 	m_LightTexture->Bind();
 
-	/*m_LightShader->bindShader();
-	m_LightShader->sendUniform4x4("modelview_matrix", modelviewMatrix);
-	m_LightShader->sendUniform4x4("projection_matrix", projectionMatrix);
-	m_LightShader->sendUniform("ambient", LIGHT_AMBIENT_R, LIGHT_AMBIENT_G, LIGHT_AMBIENT_B);
-	m_LightShader->sendUniform("emissive", 1.0f, 1.0f, 1.0f);
-	m_LightShader->sendUniform("texture0", 0);*/
-
 	glPushMatrix();
-		glTranslatef(m_PlayerLight.position.x + (LEVEL_SIZE_X / 2.0), m_PlayerLight.position.y + (LEVEL_SIZE_X / 2.0), 3.0);
+		glTranslatef(x, y, 1.0);
 
 		m_LightModel->render();
 	glPopMatrix();
