@@ -139,7 +139,7 @@ void Level::Update(void) {
 	std::list<Enemy*>::iterator enemy_it;
 	for (enemy_it = m_Enemies.begin() ; enemy_it != m_Enemies.end(); enemy_it++) {
 		// if dead, remove it from the list and delete it
-		if ((*enemy_it)->IsDead()) {
+		if ((*enemy_it)->IsDecayed()) {
 			Enemy* tmp = (*enemy_it);
 			enemy_it--;
 			m_Enemies.remove(tmp);
@@ -177,32 +177,36 @@ void Level::Update(void) {
 
 	// check if the player is colliding with any enemies
 	for (enemy_it = m_Enemies.begin(); enemy_it != m_Enemies.end(); enemy_it++) {
-		float dx = (*enemy_it)->GetX() - m_Player->GetX();
-		float dy = (*enemy_it)->GetY() - m_Player->GetY();
+		if (!(*enemy_it)->IsDead()) {
+			float dx = (*enemy_it)->GetX() - m_Player->GetX();
+			float dy = (*enemy_it)->GetY() - m_Player->GetY();
 
-		float dist = sqrt(dx * dx + dy * dy);
-		float radii = m_Player->GetRadius();// + (*enemy_it)->GetRadius();
+			float dist = sqrt(dx * dx + dy * dy);
+			float radii = m_Player->GetRadius();// + (*enemy_it)->GetRadius();
 
-		// if the distance is less than the added radii, then a collision
-		if (dist < radii) {
-			m_Player->Kill();
+			// if the distance is less than the added radii, then a collision
+			if (dist < radii) {
+				m_Player->Kill();
+			}
 		}
 	}
 
 	// check if the player is colliding with any enemies
 	for (enemy_it = m_Enemies.begin(); enemy_it != m_Enemies.end(); enemy_it++) {
 		for (rocket_it = m_Rockets.begin(); rocket_it != m_Rockets.end(); rocket_it++) {
-			float dx = (*rocket_it)->GetX() - (*enemy_it)->GetX();
-			float dy = (*rocket_it)->GetY() - (*enemy_it)->GetY();
+			if (!(*enemy_it)->IsDead()) {
+				float dx = (*rocket_it)->GetX() - (*enemy_it)->GetX();
+				float dy = (*rocket_it)->GetY() - (*enemy_it)->GetY();
 
-			float dist = sqrt(dx * dx + dy * dy);
-			float radii = (*enemy_it)->GetRadius();// + (*enemy_it)->GetRadius();
+				float dist = sqrt(dx * dx + dy * dy);
+				float radii = (*enemy_it)->GetRadius();// + (*enemy_it)->GetRadius();
 
-			// if the distance is less than the added radii, then a collision
-			if (dist < radii) {
-				m_Player->incKillCount();
-				(*enemy_it)->Kill();
-				(*rocket_it)->Kill();
+				// if the distance is less than the added radii, then a collision
+				if (dist < radii) {
+					m_Player->incKillCount();
+					(*enemy_it)->Kill();
+					(*rocket_it)->Kill();
+				}
 			}
 		}
 	}

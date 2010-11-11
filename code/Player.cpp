@@ -39,7 +39,7 @@ void Player::Draw(void) {
 	glPushMatrix();
 		// translate to the player position
 		// offset vertically by half the player so as to not be underground
-		glTranslatef(m_XPos, m_YPos, m_Model->getRadius());
+		glTranslatef(m_XPos, m_YPos, m_Model->getRadius() + 0.2);
 
 		// bind the texture
 		m_Texture->Bind();

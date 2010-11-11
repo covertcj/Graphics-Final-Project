@@ -13,16 +13,19 @@ Enemy::Enemy(Texture* enemyTexture) {
 	m_Texture = enemyTexture;
 
 	m_Model = new MD2Model(VSHADER_ENEMY, FSHADER_ENEMY);
-	m_Model->setAnimation(Animation::IDLE);
-	m_CurrentAnimation = IDLE;
+	m_Model->setAnimation(Animation::RUN);
+	m_CurrentAnimation = RUN;
 	m_Model->load(MODEL_ENEMY);
 
-	m_XPos      = 0.0f;
-	m_YPos      = 0.0f;
-	m_XTarget   = 0.0f;
-	m_YTarget   = 0.0f;
-	m_IsDead    = false;
-	m_IsMoving  = false;
+	m_XPos      	= 0.0f;
+	m_YPos      	= 0.0f;
+	m_XTarget   	= 0.0f;
+	m_YTarget   	= 0.0f;
+	m_DecayTimer	= 0.0f;
+	m_IsDecayed 	= false;
+	m_IsDead    	= false;
+	m_IsMoving  	= false;
+	m_IsCelebrating	= false;
 }
 
 Enemy::~Enemy(void) {
@@ -35,7 +38,7 @@ void Enemy::Draw(void) {
 	glPushMatrix();
 		// translate to the player position
 		// offset vertically by half the player so as to not be underground
-		glTranslatef(m_XPos, m_YPos, m_Model->getRadius());
+		glTranslatef(m_XPos, m_YPos, m_Model->getRadius() + 0.2);
 
 		// bind the texPlayerture
 		m_Texture->Bind();
@@ -52,6 +55,28 @@ void Enemy::Draw(void) {
 
 void Enemy::Update(Player* player) {
 	float dt = Timer::GetDT();
+
+	// update the animation
+	m_Model->update(dt);
+
+	if (m_IsDead) {
+		m_DecayTimer += dt;
+
+		if (m_DecayTimer >= ENEMY_DECAY_TIMER) {
+			m_IsDecayed = true;
+		}
+
+		return;
+	}
+
+	if (player->isDead()) {
+		if (!m_IsCelebrating) {
+			m_Model->setAnimation(Animation::FLIP_OFF);
+			m_IsCelebrating = true;
+		}
+
+		return;
+	}
 
 	checkTarget(player);
 	move(player);
@@ -72,22 +97,10 @@ void Enemy::Update(Player* player) {
 		m_YPos = m_Model->getRadius();
 	}
 
-	if (m_IsMoving)
-	{
-		m_Model->setAnimation(Animation::RUN);
-		m_CurrentAnimation = RUN;
-	}
-	else
-	{
-		m_Model->setAnimation(Animation::IDLE);
-		m_CurrentAnimation = IDLE;
-	}
+
 
 	// set the rotation angle
 	m_Rotation = rad2Deg(atan2(m_YPos-player->GetY(), m_XPos-player->GetX()))+180.0;
-
-	// update the animation
-	m_Model->update(dt);
 }
 
 void Enemy::SetX(float x) {
@@ -122,12 +135,24 @@ float Enemy::GetRadius(void) {
 	return m_Model->getRadius();
 }
 
-bool Enemy::IsDead(void) {
-	return m_IsDead;
+bool Enemy::IsDecayed(void) {
+	return m_IsDecayed;
 }
 
 void Enemy::Kill(void) {
 	m_IsDead = true;
+
+	int r = rand() % 3;
+
+	if (r == 0) {
+		m_Model->setAnimation(Animation::DEATH1);
+	}
+	else if (r == 1) {
+		m_Model->setAnimation(Animation::DEATH2);
+	}
+	else if (r == 2) {
+		m_Model->setAnimation(Animation::DEATH3);
+	}
 }
 
 void Enemy::checkTarget(Player* player) {
@@ -153,4 +178,8 @@ void Enemy::move(Player* player) {
 	}
 	else
 		m_IsMoving = false;
+}
+
+bool Enemy::IsDead(void) {
+	return m_IsDead;
 }

@@ -54,13 +54,13 @@ using std::vector;
 using std::map;
 using std::ifstream;
 
-#define SQUARE_ROOT_2		1.41421356
+#define SQUARE_ROOT_2			1.41421356
 
-#define WINDOW_FULLSCREEN	false
-#define WINDOW_RESOLUTION_X	1024
-#define WINDOW_RESOLUTION_Y	1024
-#define WINDOW_BPP			16
-#define WINDOW_TITLE		"Ogro Invasion"
+#define WINDOW_FULLSCREEN		true
+#define WINDOW_RESOLUTION_X		1024
+#define WINDOW_RESOLUTION_Y		1024
+#define WINDOW_BPP				16
+#define WINDOW_TITLE			"Ogro Invasion"
 
 #define LEVEL_SIZE_X			15.0
 #define LEVEL_SIZE_Y			15.0
@@ -70,9 +70,10 @@ using std::ifstream;
 #define LEVEL_TO_SCREEN_SCALE_X	WINDOW_RESOLUTION_X / LEVEL_SIZE_X
 #define LEVEL_TO_SCREEN_SCALE_Y	WINDOW_RESOLUTION_Y / LEVEL_SIZE_Y
 
-#define ENEMY_SPAWN_COOL		5
+#define ENEMY_SPAWN_COOL		3.5
 #define ENEMY_SPAWN_COOL_MIN	0.5
 #define ENEMY_SPAWN_COOL_RED	0.1
+#define ENEMY_DECAY_TIMER		3.0
 
 #define PLAYER_VELOCITY			2.2
 #define PLAYER_VELOCITY_DIAG	PLAYER_VELOCITY / SQUARE_ROOT_2

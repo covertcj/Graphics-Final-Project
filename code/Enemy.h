@@ -29,6 +29,7 @@ public:
 	float GetRadius(void);
 
 	bool IsDead(void);
+	bool IsDecayed(void);
 	void Kill(void);
 	void move(Player* Player);
 	void checkTarget(Player* player);
@@ -39,9 +40,12 @@ private:
 	float m_XTarget;
 	float m_YTarget;
 	float m_Rotation;
+	float m_DecayTimer;
 
 	bool m_IsDead;
 	bool m_IsMoving;
+	bool m_IsDecayed;
+	bool m_IsCelebrating;
 
 	AnimationEnum m_CurrentAnimation;
 
