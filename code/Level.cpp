@@ -179,11 +179,12 @@ void Level::Update(void) {
 		float dy = (*enemy_it)->GetY() - m_Player->GetY();
 
 		float dist = sqrt(dx * dx + dy * dy);
-		float radii = m_Player->GetRadius() + (*enemy_it)->GetRadius();
+		float radii = m_Player->GetRadius();// + (*enemy_it)->GetRadius();
 
 		// if the distance is less than the added radii, then a collision
 		if (dist < radii) {
 			// TODO: Perform a collision
+			m_Player->Kill();
 		}
 	}
 }
