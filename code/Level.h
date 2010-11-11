@@ -61,6 +61,8 @@ private:
 	//Enemy* m_Enemy;
 	Texture* m_EnemyTexture;
 
+    Scoreboard* m_Scoreboard;
+
     GLuint m_vertexBuffer;
     GLuint m_texCoordBuffer;
     GLuint m_normalsBuffer;

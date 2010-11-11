@@ -94,6 +94,9 @@ void Level::Initialize(Texture* groundTexture, Texture* lightTexture) {
 
 	m_EnemyTimer = 0.0;
 	m_EnemyTimeBetween = ENEMY_SPAWN_COOL;
+
+	m_Scoreboard = new Scoreboard();
+	m_Scoreboard->Initialize();
 }
 
 void Level::Destroy(void) {
@@ -106,6 +109,9 @@ void Level::Destroy(void) {
 	m_PlayerTexture->Destroy();
 	delete m_PlayerTexture;
 	delete m_Player;
+
+	m_Scoreboard->Destroy();
+	delete m_Scoreboard;
 }
 
 void Level::Draw(void) {
@@ -124,6 +130,10 @@ void Level::Draw(void) {
 	std::list<Enemy*>::iterator enemy_it;
 	for (enemy_it = m_Enemies.begin() ; enemy_it != m_Enemies.end(); enemy_it++) {
 		(*enemy_it)->Draw();
+	}
+
+	if (Input::IsKeyDown(SDLK_TAB)) {
+		m_Scoreboard->Draw();
 	}
 }
 
@@ -172,6 +182,8 @@ void Level::Update(void) {
 		if (m_Player->CanShoot()) {
 			m_Rockets.push_back(new Rocket(m_Player->GetX(), m_Player->GetY(), m_Player->GetRotation(), m_RocketTexture));
 			m_Player->Shoot();
+
+			m_Scoreboard->Shoot();
 		}
 	}
 
@@ -191,7 +203,7 @@ void Level::Update(void) {
 		}
 	}
 
-	// check if the player is colliding with any enemies
+	// check if the enemies are colliding with any rockets
 	for (enemy_it = m_Enemies.begin(); enemy_it != m_Enemies.end(); enemy_it++) {
 		for (rocket_it = m_Rockets.begin(); rocket_it != m_Rockets.end(); rocket_it++) {
 			if (!(*enemy_it)->IsDead()) {
@@ -206,6 +218,7 @@ void Level::Update(void) {
 					m_Player->incKillCount();
 					(*enemy_it)->Kill();
 					(*rocket_it)->Kill();
+					m_Scoreboard->KillEnemy();
 				}
 			}
 		}
@@ -229,6 +242,8 @@ void Level::Update(void) {
 			Level::spawnEnemy();
 		}
 	}
+
+	m_Scoreboard->Update();
 }
 
 void Level::DrawLevelPlane(void) {

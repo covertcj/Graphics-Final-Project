@@ -14,13 +14,16 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <sstream>
 #include <list>
 
 #include <SDL/SDL.h>
+#include <SDL/SDL_ttf.h>
 #include <GL/glew.h>
 //#include <SDL/SDL_opengl.h>
 #include <GL/glu.h>
 
+class Scoreboard;
 class Rocket;
 class MD2Model;
 class Player;
@@ -43,6 +46,7 @@ enum AnimationEnum {
 #include "Enemy.h"
 #include "Player.h"
 #include "Rocket.h"
+#include "Scoreboard.h"
 #include "Shader.h"
 #include "Texture.h"
 #include "Timer.h"
@@ -56,11 +60,13 @@ using std::ifstream;
 
 #define SQUARE_ROOT_2			1.41421356
 
-#define WINDOW_FULLSCREEN		true
+#define WINDOW_FULLSCREEN		false
 #define WINDOW_RESOLUTION_X		1024
 #define WINDOW_RESOLUTION_Y		1024
 #define WINDOW_BPP				16
 #define WINDOW_TITLE			"Ogro Invasion"
+
+#define FONT_PATH				"data/fonts/Abscissa.ttf"
 
 #define LEVEL_SIZE_X			15.0
 #define LEVEL_SIZE_Y			15.0
