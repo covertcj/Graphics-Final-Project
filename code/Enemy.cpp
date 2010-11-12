@@ -71,7 +71,7 @@ void Enemy::Update(Player* player) {
 
 	if (player->isDead()) {
 		if (!m_IsCelebrating) {
-			m_Model->setAnimation(Animation::FLIP_OFF);
+			m_Model->setAnimation(Animation::PAIN1);
 			m_IsCelebrating = true;
 		}
 

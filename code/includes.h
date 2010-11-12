@@ -30,7 +30,6 @@ class Player;
 class Enemy;
 class GLSLProgram;
 class AppWindow;
-class TestObject;
 class Texture;
 class Level;
 
@@ -46,7 +45,7 @@ using std::ifstream;
 
 #define SQUARE_ROOT_2			1.41421356
 
-#define WINDOW_FULLSCREEN		false
+#define WINDOW_FULLSCREEN		true
 #define WINDOW_RESOLUTION_X		1024
 #define WINDOW_RESOLUTION_Y		1024
 #define WINDOW_BPP				16
@@ -63,7 +62,7 @@ using std::ifstream;
 #define LEVEL_TO_SCREEN_SCALE_Y	WINDOW_RESOLUTION_Y / LEVEL_SIZE_Y
 
 #define ENEMY_VELOCITY			0.8
-#define ENEMY_SPAWN_COOL		3.5
+#define ENEMY_SPAWN_COOL		3.0
 #define ENEMY_SPAWN_COOL_MIN	0.5
 #define ENEMY_SPAWN_COOL_RED	0.1
 #define ENEMY_DECAY_TIMER		30.0
@@ -78,7 +77,7 @@ using std::ifstream;
 #define MODEL_PLAYER			"data/models/Ogro/tris.md2"
 #define MODEL_ENEMY				"data/models/Ogro/tris.md2"
 #define MODEL_LIGHT				"data/models/Ball/tris.md2"
-#define MODEL_ROCKET			"data/models/Ball/tris.md2"//"data/models/Rocket/tris.md2"
+#define MODEL_ROCKET			"data/models/Ball/tris.md2"
 
 #define TEXTURE_GROUND			"data/textures/ground.bmp"
 #define TEXTURE_GROUND2			"data/textures/ground2.bmp"
@@ -132,6 +131,5 @@ using std::ifstream;
 #include "Texture.h"
 #include "Timer.h"
 #include "Window.h"
-#include "TestObject.h"
 
 #endif /* INCLUDES_H_ */
